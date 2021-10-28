@@ -1,0 +1,87 @@
+@import "normalize";
+@import "mixins_adapt";
+@import "font-awesome";
+@import "css-vars";
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-size: $mainFontSize;
+  color: $mainTextColor;
+}
+.header {
+  &__title {
+    text-align: center;
+  }
+}
+.main {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .signin-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: center;
+    border: 1px solid #a3a3ff;
+    border-radius: 5px;
+    margin-top: -10vh;
+    padding: 10px 70px 40px 70px;
+    /* offset-x | offset-y | blur-radius | spread-radius | color */
+    box-shadow: 2px 2px 5px 0px #5252f3;
+    &__title {
+      margin-top: 5px;
+    }
+    img {
+      width: 150px;
+      filter: invert(100%) sepia(100%) saturate(500%) brightness(50%)
+        hue-rotate(180deg);
+    }
+    input {
+      width: 300px;
+      height: 30px;
+      border-radius: 3px;
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+      text-align: center;
+      color: $mainTextColor;
+      &:focus {
+        box-shadow: 2px 2px 5px 0px #5252f3;
+      }
+    }
+    button {
+      padding: 10px 5px;
+      width: 100%;
+      background: linear-gradient(#2626d5 30%, #5252f3 60%, #2626d5);
+      border-color: #2626d5;
+      border-radius: 5px;
+      text-transform: uppercase;
+      font-size: 1.6rem;
+      color: azure;
+      cursor: pointer;
+      transition: all $animationFast ease-in;
+      &:hover {
+        background: linear-gradient(#2626d5 10%, #5252f3 40%, #2626d5);
+      }
+      &:active {
+        background: linear-gradient(#2626d5 10%, #5252f3 70%, #2626d5);
+      }
+    }
+  }
+}
+.footer {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 20px;
+  &__links {
+    font-size: 1.5em;
+    margin: 1em 0;
+  }
+}
+@import "messages";

@@ -1,0 +1,29 @@
+.messages {
+  display: block;
+  &__item {
+    box-shadow: 2px 2px 5px 0px #5252f3;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    padding: 5px 10px;
+    font-size: 1.5em;
+    transition: $animationFast;
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+  &__author {
+    > div {
+      display: flex;
+      justify-content: space-between;
+      label {
+        margin-right: 40px;
+      }
+    }
+  }
+  &__text {
+    flex: 1 1 auto;
+    margin-left: 30px;
+  }
+}
