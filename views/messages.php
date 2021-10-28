@@ -18,13 +18,13 @@ else{
       <div class='messages__item'>
         <div class='messages__author'>
           <div class='messages__author-name'>
-            <label>Name:</label>{$allMessages[$x]['name']}
+            {$allMessages[$x]['name']}
           </div>
           <div class='messages__author-contact'>
-            <label>Contact:</label>{$allMessages[$x]['contact']}
+            {$allMessages[$x]['contact']}
           </div>
           <div class='messages__author-email'>
-            <label>E-mail:</label>{$allMessages[$x]['email']}
+            {$allMessages[$x]['email']}
           </div>
         </div>
         <div class='messages__text'>
