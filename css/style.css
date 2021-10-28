@@ -3312,6 +3312,10 @@ body {
   color: #291975;
 }
 
+.main .signin-form input::-webkit-input-placeholder, .main .signin-form input::-moz-placeholder, .main .signin-form input:-moz-placeholderr, .main .signin-form input:-ms-input-placeholder {
+  color: #291975;
+}
+
 .main .signin-form input:focus {
   -webkit-box-shadow: 2px 2px 5px 0px #5252f3;
           box-shadow: 2px 2px 5px 0px #5252f3;

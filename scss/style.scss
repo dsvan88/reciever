@@ -48,6 +48,12 @@ body {
       font-size: 1.5rem;
       text-align: center;
       color: $mainTextColor;
+      &::-webkit-input-placeholder,
+      &::-moz-placeholder,
+      &:-moz-placeholderr,
+      &:-ms-input-placeholder {
+        color: $mainTextColor;
+      }
       &:focus {
         box-shadow: 2px 2px 5px 0px #5252f3;
       }
