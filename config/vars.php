@@ -6,10 +6,10 @@ if (!defined('SQL_HOST'))
 	define('TABLE_USERS', 'users');
 	if (isset($_ENV["DATABASE_URL"])){
 		preg_match('/\/\/(.*?)\:(.*?)\@(.*?)\:(\d{1,5})\/(.*)/',$_ENV["DATABASE_URL"], $match);
-		define('SQL_HOST', 	$match[3]);
-		define('SQL_PORT', 	$match[4]);
 		define('SQL_USER', 	$match[1]);
 		define('SQL_PASS', 	$match[2]);
+		define('SQL_HOST', 	$match[3]);
+		define('SQL_PORT', 	$match[4]);
 		define('SQL_DB', 	$match[5]);
 	}
 	else {
