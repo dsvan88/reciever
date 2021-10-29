@@ -24,6 +24,8 @@ $action->query(
         );"
     )
 );
-$action->rowInsert(['login'=>'admin', 'password' => 'f766b6dde26c3bdcdbc83029abbd0b6a27e480fe'],TABLE_USERS);
+if (!$action->recordExists(['login'=>'admin'],TABLE_USERS)){
+    $action->rowInsert(['login'=>'admin', 'password' => 'f766b6dde26c3bdcdbc83029abbd0b6a27e480fe'],TABLE_USERS);
+}
 
 echo 'Done!';

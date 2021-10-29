@@ -31,6 +31,19 @@ class Action {
             return false;
         }
     }
+    // Проверка наличия записей в базе по критериям
+    function recordExists($criteria,$table,$criteriaType='OR'){
+
+		$keys = array_keys($criteria);
+		$query = "SELECT COUNT(id) FROM $table WHERE ";
+
+		for($x = 0; $x<count($keys); $x++){
+			if (trim($criteria[$keys[$x]]) !== ''){
+				$query .= $keys[$x]." = :$keys[$x] $criteriaType ";
+			}
+		}
+		return ($this->getColumn($this->prepQuery(substr($query,0,-2-strlen($criteriaType)),$criteria)) > 0) ? true : false;
+	}
     // Добавляет запись в MYSQL базу
 	// $data - ассоциативный массив со значениями записи: array('column_name'=>'column_value',...)
 	// $t - таблица в которую будет добавлена запись
@@ -70,10 +83,22 @@ class Action {
         }
         $this->prepQuery(substr($query,0,-1).substr($conditon,0,-3), $data);
     }
+    // Вибирает значение лишь одной колонки, быстрее, чем GetRow($q)[0]
+	function getColumn($q, $n=0)
+	{
+		return $q->fetchColumn($n);
+	}
+    // Разбирает результат запроса в простой массив
+	function GetRow($q)
+	{
+		return $q->fetch(PDO::FETCH_NUM);
+	}
+    // Разбирает результат запроса в ассоциативный массив
     function getAssoc($q)
 	{
 		return $q ? $q->fetch(PDO::FETCH_ASSOC) : $q;
 	}
+    // Перебирает результат запроса в двухмерный ассоциативный массив
     function getAssocArray($r)
 	{
 		$a = array();
