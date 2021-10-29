@@ -17,6 +17,9 @@ else{
     $output['{MAIN_CONTENT}'] .= "
       <div class='messages__item'>
         <div class='messages__author'>
+          <div class='messages__time'>
+            ".date('d.m.Y H:i:s', $allMessages[$x]['time'])."
+          </div>
           <div class='messages__author-name'>
             {$allMessages[$x]['name']}
           </div>
