@@ -1,9 +1,6 @@
 <?
 if (!defined('SQL_HOST'))
 {
-	define('PASS_SALT', 'VeRyHaRdSaLt_');
-	define('TABLE_MAIN', 'requests');
-	define('TABLE_USERS', 'users');
 	if (isset($_ENV["DATABASE_URL"])){
 		preg_match('/\/\/(.*?)\:(.*?)\@(.*?)\:(\d{1,5})\/(.*)/',$_ENV["DATABASE_URL"], $match);
 		define('SQL_USER', 	$match[1]);
@@ -19,6 +16,9 @@ if (!defined('SQL_HOST'))
 		define('SQL_PASS', 	'');
 		define('SQL_DB', 	'dsvtester');
 	}
+	define('PASS_SALT', 'VeRyHaRdSaLt_');
+	define('TABLE_MAIN', 'requests');
+	define('TABLE_USERS', 'users');
 }
 
 // if (CFG_DEBUG){

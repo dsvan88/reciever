@@ -83,13 +83,13 @@ class Action {
         }
         $this->prepQuery(substr($query,0,-1).substr($conditon,0,-3), $data);
     }
-    // Вибирает значение лишь одной колонки, быстрее, чем GetRow($q)[0]
+    // Вибирает значение лишь одной колонки, быстрее, чем getRow($q)[0]
 	function getColumn($q, $n=0)
 	{
 		return $q->fetchColumn($n);
 	}
     // Разбирает результат запроса в простой массив
-	function GetRow($q)
+	function getRow($q)
 	{
 		return $q->fetch(PDO::FETCH_NUM);
 	}
