@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once __DIR__."/action.class.php";
+require_once __DIR__."/class.action.php";
 
 class Users extends Action{
     public function login($data){

@@ -4,7 +4,7 @@ header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') exit();
 
-require $_SERVER['DOCUMENT_ROOT'].'/engine/action.class.php';
+require $_SERVER['DOCUMENT_ROOT'].'/engine/class.action.php';
 
 $contentType = isset($_SERVER['CONTENT_TYPE']) ? trim($_SERVER['CONTENT_TYPE']) : '';
 
@@ -46,10 +46,16 @@ else{
 $action->SQLClose();
 unset($action);
 
-if (mail('dsv.tester33@gmail.com',"Request from $array[name] (Contact Form Resume)","Name: $array[name]\r\nContact:$array[contact]\r\nEmail:$array[email]\r\nMessage:\r\n$array[message]")){
-    $result['text'] .=' Email send!';
-}
-else{
-    $result['text'] .=' Email not send!';
+if (CFG_EMAIL){
+    require $_SERVER['DOCUMENT_ROOT'].'/engine/class.mailer.php';
+
+    $mailer = new Mailer($array);
+    try {
+        $result['text'] .= $mailer->send() ? ' Email send.' : ' Email not send!';
+    }
+    catch (Exception $e) {
+        $result['text'] .= " Email not send! Error: {$mailer->ErrorInfo}";
+    }
+    error_log(json_encode($GLOBALS['status'],JSON_UNESCAPED_UNICODE));
 }
 echo json_encode($result,JSON_UNESCAPED_UNICODE);

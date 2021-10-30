@@ -16,8 +16,10 @@ if (!defined('SQL_HOST'))
 		define('SQL_PASS', 	'');
 		define('SQL_DB', 	'dsvtester');
 	}
+	define('CFG_EMAIL', true);
 	define('TABLE_MAIN', 'requests');
 	define('TABLE_USERS', 'users');
+	define('TABLE_AUTH', 'auth');
 }
 
 // if (CFG_DEBUG){

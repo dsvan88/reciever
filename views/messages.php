@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'].'/engine/messages.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/engine/class.messages.php';
 
 $messages = new Messages();
 $allMessages = $messages->getMessages();

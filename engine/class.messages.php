@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__.'/action.class.php';
+require_once __DIR__.'/class.action.php';
 
 class Messages extends Action {
     public function getMessages(){
