@@ -16,7 +16,6 @@ if (!defined('SQL_HOST'))
 		define('SQL_PASS', 	'');
 		define('SQL_DB', 	'dsvtester');
 	}
-	define('PASS_SALT', 'VeRyHaRdSaLt_');
 	define('TABLE_MAIN', 'requests');
 	define('TABLE_USERS', 'users');
 }
