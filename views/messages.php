@@ -14,24 +14,30 @@ if ($messagesCount === 0){
 }
 else{
   for($x=0;$x<$messagesCount;$x++){
-    $output['{MAIN_CONTENT}'] .= "
-      <div class='messages__item'>
-        <div class='messages__author'>
-          <div class='messages__time'>
-            ".date('d.m.Y H:i:s', $allMessages[$x]['time'])."
+    $output['{MAIN_CONTENT}'] .= '
+      <div class="messages__item">
+        <div class="messages__author">
+          <div class="messages__time">
+            '.date('d.m.Y H:i:s', $allMessages[$x]['time'])."
           </div>
           <div class='messages__author-name'>
             {$allMessages[$x]['name']}
           </div>
           <div class='messages__author-contact'>
-            {$allMessages[$x]['contact']}
+            <a href='tel:{$allMessages[$x]['contact']}'>{$allMessages[$x]['contact']}</a>
           </div>
           <div class='messages__author-email'>
-            {$allMessages[$x]['email']}
+            <a href='mailto:{$allMessages[$x]['email']}'>{$allMessages[$x]['email']}</a>
           </div>
         </div>
         <div class='messages__text'>
           {$allMessages[$x]['message']}
+        </div>
+        <div class='messages__dashboard'>
+          <button><i class='fa fa-eye'></i></button>
+          <button><i class='fa fa-trash'></i></button>
+          <button><i class='fa fa-file-archive-o'></i></button>
+          <button><i class='fa fa-pencil-square-o'></i></button>
         </div>
       </div>
     ";
