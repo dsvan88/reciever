@@ -16,14 +16,16 @@ if (!defined('SQL_HOST'))
 		define('SQL_PASS', 	'');
 		define('SQL_DB', 	'dsvtester');
 	}
+	define('CFG_DEBUG', false);
 	define('CFG_EMAIL', true);
+	define('CFG_BOTS', true);
 	define('TABLE_MAIN', 'requests');
 	define('TABLE_USERS', 'users');
 	define('TABLE_AUTH', 'auth');
 }
 
-// if (CFG_DEBUG){
-	// ini_set('error_reporting', E_ALL);
-	// ini_set('display_errors', 1);
-	// ini_set('display_startup_errors', 1);
-// }
+if (CFG_DEBUG){
+	ini_set('error_reporting', E_ALL);
+	ini_set('display_errors', 1);
+	ini_set('display_startup_errors', 1);
+}

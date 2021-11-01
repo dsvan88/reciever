@@ -55,7 +55,22 @@ if (CFG_EMAIL){
     }
     catch (Exception $e) {
         $result['text'] .= " Email not send! Error: {$mailer->ErrorInfo}";
+        if (isset($GLOBALS['status']))
+            error_log(json_encode($GLOBALS['status'],JSON_UNESCAPED_UNICODE));
     }
-    error_log(json_encode($GLOBALS['status'],JSON_UNESCAPED_UNICODE));
+    
+}
+if (CFG_BOTS){
+    require $_SERVER['DOCUMENT_ROOT'].'/engine/class.bots.php';
+    
+    $bot = new MessageBot();
+    $bot->prepMessage($array);    
+
+    try {
+        $result['text'] .= $bot->sendToTelegramBot() ? '<div>Message to telegramm - send.</div>' : '<div>Message to telegramm - not send!</div>';
+    }
+    catch (Exception $e) {
+        $result['text'] .= " Message not send!";
+    }
 }
 echo json_encode($result,JSON_UNESCAPED_UNICODE);

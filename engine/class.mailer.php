@@ -44,8 +44,8 @@ class Mailer{
             'title' => "Request from $array[name] < $array[email] >, through Resume's Contact form",
             'body'  => "<h2>New request</h2>
                         <b>Name:</b> $array[name]<br>
-                        <b>E-mail:</b> $array[email]<br><br>
-                        <b>Contact:</b> $array[contact]<br><br>
+                        <b>E-mail:</b> $array[email]<br>
+                        <b>Contact:</b> $array[contact]<br>
                         <b>Message:</b><br>$array[message]"
         ];
     }
@@ -67,7 +67,6 @@ class Mailer{
         return $this->mail->send(); 
     }
     private function getAuthData(){
-        require_once $_SERVER['DOCUMENT_ROOT'].'/engine/class.action.php';
         require_once $_SERVER['DOCUMENT_ROOT'].'/engine/class.crypt.php';
         $dbAction = new Action();
         $authDataCrypted = $dbAction->getAssoc($dbAction->query('SELECT * FROM '.TABLE_AUTH.' WHERE id = 1 LIMIT 1'));
