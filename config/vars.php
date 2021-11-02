@@ -17,6 +17,7 @@ if (!defined('SQL_HOST'))
 		define('SQL_DB', 	'dsvtester');
 	}
 	define('CFG_DEBUG', false);
+	define('CFG_MESSAGE_PER_PAGE', 10);
 	define('CFG_EMAIL', true);
 	define('CFG_BOTS', true);
 	define('TABLE_MAIN', 'requests');

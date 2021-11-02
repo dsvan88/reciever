@@ -1,19 +1,21 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'].'/engine/class.messages.php';
 
-$messages = new Messages();
-$allMessages = $messages->getMessages();
-
 $output['{HEADER_TITLE}'] = 'Simple personal mail system!';
-$output['{MAIN_CONTENT}'] = '';
 
-$messagesCount = count($allMessages);
+$messages = new Messages();
+$messagesCount = $messages->getMessagesCount();
 
 if ($messagesCount === 0){
   $output['{MAIN_CONTENT}'] = '<h1>Nothing to show!</h1>';
 }
-else{
-  for($x=0;$x<$messagesCount;$x++){
+else {
+  $page = 0;
+  if (isset($_GET['page']))
+    $page = (int) $_GET['page'];
+  $allMessages = $messages->getMessages($page);
+  $output['{MAIN_CONTENT}'] = '';
+  for($x=0;$x<count($allMessages);$x++){
     $output['{MAIN_CONTENT}'] .= '
       <div class="messages__item">
         <div class="messages__author">
@@ -42,5 +44,12 @@ else{
       </div>
     ";
   };
+  if ($messagesCount > CFG_MESSAGE_PER_PAGE){
+    $pagesCount = ceil($messagesCount/CFG_MESSAGE_PER_PAGE);
+    for($x=0;$x<$pagesCount;$x++){
+      $output['{MAIN_CONTENT}'] .= "<a href='/?page=$x'>${$x+1}</a>";
+    }
+  }
 };
+
 $output['{MAIN_CONTENT}'] = '<main class="main messages">'.$output['{MAIN_CONTENT}'].'</main>';

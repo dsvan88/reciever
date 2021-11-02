@@ -31,9 +31,10 @@ class Mailer{
         $this->mail->Password   = $authData['password'];
         $this->mail->SMTPSecure = 'ssl';
         $this->mail->Port       = 465;
-        $this->mail->setFrom($this->message['email'], 'DSVan Tester');
+        $this->mail->setFrom($this->message['email'], $array['name']);
 
         $this->mail->addAddress($authData['email']);
+        // $this->mail->addAddress('yourMainEmail@gmail.com'); // If you need send message from your main tech email to your main email - you can change it here
         $this->mail->isHTML(true);
     }
     public function prepMessage($array){
@@ -69,7 +70,7 @@ class Mailer{
     private function getAuthData(){
         require_once $_SERVER['DOCUMENT_ROOT'].'/engine/class.crypt.php';
         $dbAction = new Action();
-        $authDataCrypted = $dbAction->getAssoc($dbAction->query('SELECT * FROM '.TABLE_AUTH.' WHERE id = 1 LIMIT 1'));
+        $authDataCrypted = $dbAction->getAssoc($dbAction->query('SELECT * FROM '.TABLE_AUTH.' WHERE id != 0 LIMIT 1'));
         $crypt = new Crypt(['value'=>$authDataCrypted['login'],'key'=>$authDataCrypted['key']]);
         return ['email' => $crypt->decoded, 'password' => $crypt->decrypt($authDataCrypted['password'])];
     }

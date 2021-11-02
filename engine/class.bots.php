@@ -42,7 +42,7 @@ class MessageBot{
         require_once $_SERVER['DOCUMENT_ROOT'].'/engine/class.crypt.php';
 
         $dbAction = new Action();
-        $authDataCrypted = $dbAction->getAssoc($dbAction->query('SELECT * FROM '.TABLE_AUTH.' WHERE id = 1 LIMIT 1'));
+        $authDataCrypted = $dbAction->getAssoc($dbAction->query('SELECT * FROM '.TABLE_AUTH.' WHERE id != 0 LIMIT 1'));
 
         $crypt = new Crypt(['value'=>$authDataCrypted['tg_uid'],'key'=>$authDataCrypted['key']]);
 
