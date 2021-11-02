@@ -47,8 +47,9 @@ else {
   if ($messagesCount > CFG_MESSAGE_PER_PAGE){
     $pagesCount = ceil($messagesCount/CFG_MESSAGE_PER_PAGE);
     for($x=0;$x<$pagesCount;$x++){
-      $output['{MAIN_CONTENT}'] .= "<a href='/?page=$x'>${$x+1}</a>";
+      $pagesLinks .= '<a href="/?page='.$x.'">'.($x+1).'</a>';
     }
+    $output['{MAIN_CONTENT}'] .= "<div class='messages__links'>$pagesLinks</div>";
   }
 };
 
