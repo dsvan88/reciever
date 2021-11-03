@@ -9,7 +9,7 @@ class Messages extends Action {
         if ($page === 0)
             $limit = ' LIMIT '.CFG_MESSAGE_PER_PAGE;
         else
-            $limit = ' LIMIT '.($page * CFG_MESSAGE_PER_PAGE).', '.CFG_MESSAGE_PER_PAGE;
+            $limit = ' LIMIT '.CFG_MESSAGE_PER_PAGE.' OFFSET '.(CFG_MESSAGE_PER_PAGE*$page);
         return $this->getAssocArray($this->query('SELECT * FROM '.TABLE_MAIN.' ORDER BY id DESC'.$limit));
     }
     public function archiveMessages(){

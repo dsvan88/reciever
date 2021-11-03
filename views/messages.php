@@ -44,11 +44,34 @@ else {
       </div>
     ";
   };
+  
   if ($messagesCount > CFG_MESSAGE_PER_PAGE){
     $pagesCount = ceil($messagesCount/CFG_MESSAGE_PER_PAGE);
     for($x=0;$x<$pagesCount;$x++){
-      $pagesLinks .= '<a href="/?page='.$x.'">'.($x+1).'</a>';
+      $pagesLinks .= '<a href="/?page='.$x.'"'.($x==$page ? ' class="active"' : '').'>'.($x+1).'</a>';
     }
+    if ($page > 0){
+      $pagesLinks = '<a href="/?page='.($page-1).'"><i class="fa fa-angle-left"></i></a>'.$pagesLinks;
+    }
+    else{
+      $pagesLinks = "<a><i class='fa fa-angle-left'></i></a>$pagesLinks";
+    }
+    if ($page > 5){
+      $pagesLinks = '<a href="/?page=0"><i class="fa fa-angle-double-left"></i></a>'.$pagesLinks;
+    }
+
+
+    if ($page != ($pagesCount-1)){
+      $pagesLinks .= '<a href="/?page='.($page+1).'"><i class="fa fa-angle-right"></i></a>';
+    }
+    else{
+      $pagesLinks .= '<a><i class="fa fa-angle-right"></i></a>';
+    }
+    if ($pagesCount-1 - $page > 5){
+      $pagesLinks .= '<a href="/?page='.($pagesCount-1).'"><i class="fa fa-angle-double-right"></i></a>';
+    }
+
+
     $output['{MAIN_CONTENT}'] .= "<div class='messages__links'>$pagesLinks</div>";
   }
 };

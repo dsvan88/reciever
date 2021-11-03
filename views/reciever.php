@@ -19,12 +19,12 @@ if (strpos($contentType,'application/json') !==  false) {
 }
 
 $action = new Action();
-$array=['name'=>'','email'=>'','contact'=>'','message'=>''];
+$array=['name'=>'-','email'=>'-','contact'=>'-','message'=>'-'];
 foreach($array as $key=>$value){
     if (isset($_POST["customer-$key"]))
         $array[$key] = urldecode(htmlspecialchars(trim($_POST["customer-$key"])));
 }
-if ($array['name'] === '' && $array['email'] === '' && $array['contact'] === '' && $array['message'] === ''){
+if ($array['name'] === '-' && $array['email'] === '-' && $array['contact'] === '-' && $array['message'] === '-'){
     die('{"error":"1","title":"Error!","text":"Error: Nothing to send."}');
 }
 
@@ -51,10 +51,10 @@ if (CFG_EMAIL){
 
     $mailer = new Mailer($array);
     try {
-        $result['text'] .= $mailer->send() ? ' Email send.' : ' Email not send!';
+        $result['text'] .= $mailer->send() ? '<div>Email send.</div>' : '<div>Email not send!</div>';
     }
     catch (Exception $e) {
-        $result['text'] .= " Email not send! Error: {$mailer->ErrorInfo}";
+        $result['text'] .= "<div>Email not send! Error: {$mailer->ErrorInfo}</div>";
         if (isset($GLOBALS['status']))
             error_log(json_encode($GLOBALS['status'],JSON_UNESCAPED_UNICODE));
     }
@@ -67,10 +67,11 @@ if (CFG_BOTS){
     $bot->prepMessage($array);    
 
     try {
-        $result['text'] .= $bot->sendToTelegramBot() ? '<div>Message to telegramm - send.</div>' : '<div>Message to telegramm - not send!</div>';
+        $messageSend = json_decode($bot->sendToTelegramBot(), true);
+        $result['text'] .=  $messageSend['ok'] ? '<div>Message to telegram - send.</div>' : "<div>Message to telegram - not send ($messageSend[description])!</div>";
     }
     catch (Exception $e) {
-        $result['text'] .= " Message not send!";
+        $result['text'] .= "<div>Message not send!</div>";
     }
 }
 echo json_encode($result,JSON_UNESCAPED_UNICODE);

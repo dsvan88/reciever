@@ -80,7 +80,31 @@
 		}
 	}
 	&__links {
+		display: flex;
+		justify-content: center;
+		padding: 10px 0;
 		> a {
+			margin: 0px 3px;
+			padding: 3px 5px;
+			border: 1px solid $mainTextColor;
+			text-decoration: none;
+			color: $mainTextColor;
+			transition: all $animationFast ease-in;
+			&:hover {
+				background-color: $mainTextColor;
+				color: #fff;
+			}
+			&.active {
+				margin: 0px 10px;
+				border: 1px solid $mainTextAccentColor;
+			}
+			&:not([href]) {
+				cursor: not-allowed;
+				&:hover {
+					background-color: $mainTextBlurColor;
+					color: $mainTextColor;
+				}
+			}
 		}
 	}
 }

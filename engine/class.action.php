@@ -18,11 +18,13 @@ class Action {
 	}
     function query($q)
     {
+        error_log($q);
+        // error_log(json_encode($a));
         return $this->SQL->query($q);
     }
     function prepQuery($q,$a)
     {
-        try {
+         try {
             $stmt = $this->SQL->prepare($q);
             $stmt->execute($a);
             return $stmt;
