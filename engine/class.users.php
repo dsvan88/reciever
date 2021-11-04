@@ -12,4 +12,17 @@ class Users extends Action{
         }
         return false;
     }
+    // public function addNewUser($data){
+        
+    //     $data[]
+
+    //     return $this->rowInsert($data,TABLE_USERS);
+    //     /* if (password_verify($data['password'], $authData['password'])){
+    //         $authData = $this->getAssoc($this->prepQuery(str_replace('{TABLE_USERS}', TABLE_USERS, 'SELECT id,login,password FROM {TABLE_USERS} WHERE login = ? LIMIT 1'),[$data['login']]));
+    //         unset($authData['password']);
+    //         $_SESSION = $authData;
+    //         return true;
+    //     }
+    //     return false; */
+    // }
 }
