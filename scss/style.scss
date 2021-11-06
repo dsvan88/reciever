@@ -92,3 +92,31 @@ body {
 	}
 }
 @import "messages";
+@import "modals";
+
+.modal {
+	.new-user-form {
+		display: flex;
+		flex-direction: column;
+		justify-content: stretch;
+		&__logo {
+			width: 100px;
+		}
+		&__row {
+		}
+		&__row-expand_vertical {
+			max-height: 10vh;
+			overflow-x: hidden;
+			overflow-y: auto;
+			margin-bottom: 10px;
+			text-align: center;
+			scrollbar-width: thin;
+		}
+		&__input {
+			display: block;
+			width: 40vw;
+			margin: 5px 10px;
+			text-align: center;
+		}
+	}
+}

@@ -18,15 +18,27 @@ class Action {
 	}
     function query($q)
     {
-        error_log($q);
+        // error_log($q);
         // error_log(json_encode($a));
         return $this->SQL->query($q);
     }
     function prepQuery($q,$a)
     {
-         try {
+        try {
             $stmt = $this->SQL->prepare($q);
             $stmt->execute($a);
+            return $stmt;
+        } catch (Throwable $th) {
+            error_log('Error: '.$th->getFile().':'.$th->getLine().";\r\nMessage: ".$th->getMessage()."\r\nTrace:\r\n".$th->getTraceAsString());
+            return false;
+        }
+    }
+    function prepMassQuery($q,$a)
+    {
+        $stmt = $this->SQL->prepare($q);
+        try {
+            for($x=0;$x<count($a);$x++)
+                $stmt->execute($a[$x]);
             return $stmt;
         } catch (Throwable $th) {
             error_log('Error: '.$th->getFile().':'.$th->getLine().";\r\nMessage: ".$th->getMessage()."\r\nTrace:\r\n".$th->getTraceAsString());
@@ -52,13 +64,22 @@ class Action {
 	// возвращает последнюю запись из таблицы (id новой записи, если верно указан $g_id)
 	function rowInsert($data,$t='')
 	{
-		$keys = array_keys($data);
-		$preKeys = [];
-		for ($x=0;$x<count($keys);$x++)
-			$preKeys[$x] = ':'.$keys[$x];
-		$t = $t === '' ? TABLE_MAIN : $t;
-		$this->prepQuery('INSERT INTO '.$t.' ('.implode(',',$keys).') VALUES ('.implode(',',$preKeys).')', $data);
-		return $this->SQL->lastInsertId();
+        $t = $t === '' ? TABLE_MAIN : $t;
+        $preKeys = [];
+        if (count($data) === count($data, COUNT_RECURSIVE)){
+            $keys = array_keys($data);
+            for ($x=0;$x<count($keys);$x++)
+                $preKeys[$x] = ':'.$keys[$x];
+            $this->prepQuery('INSERT INTO '.$t.' ('.implode(',',$keys).') VALUES ('.implode(',',$preKeys).')', $data);
+            return $this->SQL->lastInsertId();
+        }
+        else{
+            $keys = array_keys($data[0]);
+            for ($x=0;$x<count($keys);$x++)
+                $preKeys[$x] = ':'.$keys[$x];
+            $this->prepMassQuery('INSERT INTO '.$t.' ('.implode(',',$keys).') VALUES ('.implode(',',$preKeys).')', $data);
+            return true;
+        }
 	}
     // Обновляет запись в базе
 	// $data - ассоциативный массив со значениями записи: array('column_name'=>'column_value',...)

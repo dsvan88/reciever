@@ -4,7 +4,13 @@ require_once __DIR__.'/engine/class.users.php';
 $template = file_get_contents(__DIR__.'/templates/main_template.html');
 $user = new Users();
 
-$output['{STYLE}'] = '<link rel="stylesheet" href="./css/style.css?v='.$_SERVER['REQUEST_TIME'].'" />';
+$output = [
+	'{STYLE}' => '<link rel="stylesheet" href="./css/style.css?v='.$_SERVER['REQUEST_TIME'].'" />',
+	'{SCRIPTS}' => '',
+	'{HEADER_TITLE}' => '',
+	'{LEFT_ASIDE}' => '',
+	'{MAIN_CONTENT}' => ''
+];
 
 if (!isset($_SESSION['id'])){
 	if (!isset($_POST['login']) || !isset($_POST['password'])){
@@ -21,6 +27,19 @@ if (!isset($_SESSION['id'])){
 		die(str_replace(array_keys($output),array_values($output),$template));
 	}
 }
+$output['{LEFT_ASIDE}'] = '
+		<aside>
+			<menu type="toolbar">
+				<li data-action="add-user-form">Add User</li>
+				<li data-action="settings-form">Settings</li>
+			</menu>
+		</aside>';
+$output['{SCRIPTS}'] = '
+	<script defer src="./js/main-funcs.js?v='.$_SERVER['REQUEST_TIME'].'"></script>
+	<script defer src="./js/modals.js?v='.$_SERVER['REQUEST_TIME'].'"></script>
+	<script defer src="./js/script.js?v='.$_SERVER['REQUEST_TIME'].'"></script>
+	';
+
 require $_SERVER['DOCUMENT_ROOT'].'/views/messages.php';
 
 echo str_replace(array_keys($output),array_values($output),$template);

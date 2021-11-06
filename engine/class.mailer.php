@@ -33,7 +33,6 @@ class Mailer{
         $this->mail->Port       = 465;
         $this->mail->setFrom($this->message['email'], $array['name']);
 
-        $this->mail->addAddress($authData['email']);
         // $this->mail->addAddress('yourMainEmail@gmail.com'); // If you need send message from your main tech email to your main email - you can change it here
         $this->mail->isHTML(true);
     }
@@ -62,16 +61,27 @@ class Mailer{
             }
         }
     }
-    public function send(){
+    public function send($emails=''){
+
+        if ($emails === '') return false;
+
+        if (!is_array($emails))
+            $this->mail->addAddress($emails);
+        else{
+            for($x=0;$x<count($emails);$x++)
+                $this->mail->addAddress($emails[$x]);
+        }
+        
         $this->mail->Subject = $this->message['title'];
         $this->mail->Body = $this->message['body'];
+        
         return $this->mail->send(); 
     }
     private function getAuthData(){
         require_once $_SERVER['DOCUMENT_ROOT'].'/engine/class.crypt.php';
         $dbAction = new Action();
         $authDataCrypted = $dbAction->getAssoc($dbAction->query('SELECT * FROM '.TABLE_AUTH.' WHERE id != 0 LIMIT 1'));
-        $crypt = new Crypt(['value'=>$authDataCrypted['login'],'key'=>$authDataCrypted['key']]);
+        $crypt = new Crypt(['value'=>$authDataCrypted['email'],'key'=>$authDataCrypted['key']]);
         return ['email' => $crypt->decoded, 'password' => $crypt->decrypt($authDataCrypted['password'])];
     }
 }

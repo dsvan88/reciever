@@ -9,7 +9,8 @@ class Crypt{
             $this->encrypt($options['value']);
         }else{
             $this->key = $options['key'];
-            $this->decoded = $this->decrypt($options['value']);
+            if (isset($options['value']))
+                $this->decoded = $this->decrypt($options['value']);
         }
     }
     private function prepKey($value){

@@ -11,18 +11,18 @@ class MessageBot{
             <b>Message:</b>
             $array[message]";
     }
-	function sendToTelegramBot()
+	function sendToTelegramBot($userId)
 	{
-        $authData = $this->getAuthData();
+        $botToken = $this->getAuthData();
         $params = array(
-            'chat_id' => $authData['tg_uid'], // id получателя сообщения
+            'chat_id' => is_array($userId) ? $userId[0] : $userId, // id получателя сообщения
             'text' => $this->message, // текст сообщения
             'parse_mode' => 'HTML', // режим отображения сообщения, не обязательный параметр
         );
 
         $curl = curl_init();
         $options = array(
-			CURLOPT_URL => "https://api.telegram.org/bot$authData[tg_bot_token]/sendMessage", // адрес api телеграмм-бота
+			CURLOPT_URL => "https://api.telegram.org/bot$botToken/sendMessage", // адрес api телеграмм-бота
 			CURLOPT_RETURNTRANSFER => true,
             CURLOPT_POST => true,       // отправка данных методом POST
             CURLOPT_TIMEOUT => 10,      // максимальное время выполнения запроса
@@ -35,7 +35,17 @@ class MessageBot{
 			// CURLOPT_SSL_VERIFYPEER => 0,
 		);
 		curl_setopt_array($curl , $options);
-        return curl_exec($curl);
+        if (is_array($userId) && isset($userId[1])){
+            $newParams = $params;
+            for($x=1; $x<count($userId); $x++){
+                usleep(750000);
+                $newParams['chat_id'] = $userId[$x];
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $newParams);
+                $result = curl_exec($curl);
+            }
+        }
+        else 
+            return curl_exec($curl);
 
 	}
     private function getAuthData(){
@@ -46,6 +56,6 @@ class MessageBot{
 
         $crypt = new Crypt(['value'=>$authDataCrypted['tg_uid'],'key'=>$authDataCrypted['key']]);
 
-        return ['tg_uid' => $crypt->decoded, 'tg_bot_token' => $crypt->decrypt($authDataCrypted['tg_bot_token'])];
+        return $crypt->decrypt($authDataCrypted['tg_bot_token']);
     }
 }

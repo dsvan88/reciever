@@ -1,21 +1,20 @@
 <?php
 $contentType = isset($_SERVER['CONTENT_TYPE']) ? trim($_SERVER['CONTENT_TYPE']) : '';
 
-
 if (strpos($contentType,'application/json') !==  false) {
 	$_POST = trim(file_get_contents('php://input'));
 	$_POST = json_decode($_POST, true);
 
 	if(!is_array($_POST)){
 		error_log(json_encode($_POST,JSON_UNESCAPED_UNICODE));
-        die('{"error":"1","title":"Error!","text":"Error: Nothing to send."}');
+        die('{"error":"1","title":"Error!","html":"Error: Nothing to send."}');
     }
 }
 
 $need = trim(isset($_GET['need']) ? $_GET['need'] : $_POST['need']);
 
 if ($need==='') 
-    die('{"error":"1","title":"Error!","text":"Wrong `need` type."}');
+    die('{"error":"1","title":"Error!","html":"Wrong `need` type."}');
 
 $output['error'] = 0;
 
@@ -34,5 +33,5 @@ try{
     }
 } catch (Throwable $th) {
     $output['error'] = 1;
-    $output['txt'] = "Error with '$need': ".$th->getFile().':'.$th->getLine().";\r\nMessage: ".$th->getMessage()."\r\nTrace: ".$th->getTraceAsString();
+    $output['html'] = "Error with '$need': ".$th->getFile().':'.$th->getLine().";\r\nMessage: ".$th->getMessage()."\r\nTrace: ".$th->getTraceAsString();
 }
