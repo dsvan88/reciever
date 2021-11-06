@@ -3,7 +3,7 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/engine/class.messages.php';
 
 $output['{HEADER_TITLE}'] = 'Simple personal mail system!';
 
-$messages = new Messages();
+$messages = new Messages($_SESSION['role'] === 'admin' ? [] : ['uid'=>$_SESSION['id']]);
 $messagesCount = $messages->getMessagesCount();
 
 if ($messagesCount === 0){
@@ -33,6 +33,7 @@ else {
           </div>
         </div>
         <div class='messages__text'>
+          <h4>Send from < {$allMessages[$x]['source']} ></h4>
           {$allMessages[$x]['message']}
         </div>
         <div class='messages__dashboard'>

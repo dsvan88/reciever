@@ -37,7 +37,10 @@ if ($array['name'] === '-' && $array['email'] === '-' && $array['contact'] === '
     die('{"error":"1","title":"Error!","text":"Error: Nothing to send."}');
 }
 
-$array['time'] = $_SERVER['REQUEST_TIME'];
+$array['source']    = $source;
+$array['uid']       = $userData['uid'];
+$array['time']      = $_SERVER['REQUEST_TIME'];
+
 if ($action->rowInsert($array) > 0){
     $result=[
         'error' => '0',
