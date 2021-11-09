@@ -1,4 +1,4 @@
-async function useFetchApi({ url = '/switcher.php?', type = "json", data = '' } = {}) {
+async function useFetchApi({ url = '/switcher.php', type = "json", data = '' } = {}) {
     const options = {};
     if (data !== '') {
         options.body = data;
@@ -56,8 +56,12 @@ const mainFunc = {
     dashboardEvent: async function ([event, need]) {
         if (event.target.closest('*[data-action]').classList.contains('active'))
             return false;
-        const data = await useFetchApi({ data: `{"need":"${need}"}`});
-        console.log(data);
+        const data = await useFetchApi({ data: `{"need":"${need}"}` });
+        let parentBlock = document.body.querySelector('main');
+        parentBlock.outerHTML = data['html'];
+        parentBlock = document.body.querySelector('main');
+        const blocksWithAction = parentBlock.querySelectorAll('*[data-action]');
+        blocksWithAction.forEach(block => block.addEventListener('click', (event)=> mainFunc[camelize(block.dataset.action)](event)));
     },
     showMessagesList: function (event) {
         this.dashboardEvent([event, 'get_messages-list'])

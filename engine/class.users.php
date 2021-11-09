@@ -77,4 +77,7 @@ class Users extends Action{
     public function getUsersList(){
         return $this->getAssocArray($this->query('SELECT * FROM '.TABLE_USERS));
     }
+    public function getUsersCount(){
+        return $this->getColumn($this->query('SELECT COUNT(id) FROM '.TABLE_USERS));
+    }
 }

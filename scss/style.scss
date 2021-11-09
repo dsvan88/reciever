@@ -70,9 +70,11 @@ body {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	background-color: #bceffb;
 	border-radius: 5px;
 	padding: 5px;
+	&.main-section {
+		background-color: #bceffb;
+	}
 	.signin-form {
 		display: flex;
 		flex-direction: column;
@@ -142,6 +144,7 @@ body {
 	}
 }
 @import "messages";
+@import "users";
 @import "modals";
 
 .modal {

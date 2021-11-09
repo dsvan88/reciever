@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__.'/engine/class.users.php';
 
-$template = file_get_contents(__DIR__.'/templates/main_template.html');
+$template = file_get_contents(__DIR__.'/templates/main-template.html');
 $user = new Users();
 
 $output = [

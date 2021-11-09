@@ -77,4 +77,4 @@ else {
   }
 };
 
-$output['{MAIN_CONTENT}'] = '<main class="main messages">'.$output['{MAIN_CONTENT}'].'</main>';
+$output['{MAIN_CONTENT}'] = '<main class="main messages main-section">'.$output['{MAIN_CONTENT}'].'</main>';

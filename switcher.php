@@ -32,4 +32,8 @@ try{
     $output['error'] = 1;
     $output['html'] = "Error with '$need': ".$th->getFile().':'.$th->getLine().";\r\nMessage: ".$th->getMessage()."\r\nTrace: ".$th->getTraceAsString();
 }
+if (!isset($output['html']) && isset($output['{MAIN_CONTENT}'])){
+    $output['html'] = $output['{MAIN_CONTENT}'];
+    unset($output['{MAIN_CONTENT}']);
+}
 exit(json_encode($output,JSON_UNESCAPED_UNICODE));

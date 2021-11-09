@@ -5,5 +5,5 @@ $output = [
 	'{SCRIPTS}' => '',
 	'{HEADER_TITLE}' => 'Init form',
 	'{LEFT_ASIDE}' => '',
-	'{MAIN_CONTENT}' => file_get_contents($_SERVER['DOCUMENT_ROOT'].'/templates/init_form.html')
+	'{MAIN_CONTENT}' => file_get_contents($_SERVER['DOCUMENT_ROOT'].'/templates/form_init.html')
 ];

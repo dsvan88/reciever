@@ -1,0 +1,21 @@
+.users {
+	display: block;
+	&__item {
+		display: flex;
+		justify-content: space-between;
+		font-size: 1.5em;
+		& > div:not(:last-of-type) {
+			flex: 1 1 250px;
+		}
+		&-num {
+			flex: 0 1 2vw;
+			margin-right: 20px;
+		}
+	}
+	&__dashboard {
+		white-space: nowrap;
+	}
+	&__common-dashboard {
+		text-align: right;
+	}
+}
