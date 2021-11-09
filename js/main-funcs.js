@@ -54,28 +54,43 @@ const mainFunc = {
         oldIntput.after(newIntput);
     },
     dashboardEvent: async function ([event, need]) {
-        if (event.target.closest('*[data-action]').classList.contains('active'))
+        if (event.target.closest('*[data-action].dashboard__item').classList.contains('active'))
             return false;
         const data = await useFetchApi({ data: `{"need":"${need}"}` });
         let parentBlock = document.body.querySelector('main');
         parentBlock.outerHTML = data['html'];
         parentBlock = document.body.querySelector('main');
+
         const blocksWithAction = parentBlock.querySelectorAll('*[data-action]');
-        blocksWithAction.forEach(block => block.addEventListener('click', (event)=> mainFunc[camelize(block.dataset.action)](event)));
+        blocksWithAction.forEach(block => block.addEventListener('click', (event) => mainFunc[camelize(block.dataset.action)](event)));
+
+        const blocksWithActionChange = parentBlock.querySelectorAll('*[data-action-change]');
+        blocksWithActionChange.forEach(block => block.addEventListener('change', (event) => mainFunc[camelize(block.dataset.actionChange)](event)));
+
+        document.body.querySelector('*[data-action].dashboard__item.active').classList.remove('active');
+        event.target.closest('*[data-action].dashboard__item').classList.add('active');
     },
     showMessagesList: function (event) {
-        this.dashboardEvent([event, 'get_messages-list'])
+        this.dashboardEvent([event, 'get_messages-list']);
     },
     showArchiveList: function (event) {
-        this.dashboardEvent([event, 'get_archive-list'])
+        this.dashboardEvent([event, 'get_archive-list']);
     },
     showSettingsList: function (event) {
-        this.dashboardEvent([event, 'get_settings'])
+        this.dashboardEvent([event, 'get_settings']);
     },
     showUsersList: function (event) {
-        this.dashboardEvent([event, 'get_users-list'])
+        this.dashboardEvent([event, 'get_users-list']);
+    },
+    checkUserChange: function (event) {
+        if (event.target.value === 'all') {
+            const checkUsers = document.body.querySelectorAll('input[name="check-user"]');
+            checkUsers.forEach(checkbox => checkbox.checked = event.target.checked);
+        }
+    },
+    deleteContact: function (event) {
+        console.log(event.target.dataset.contactId);
     }
-    
 };
 
 

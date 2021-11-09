@@ -1,21 +1,23 @@
 .users {
 	display: block;
-	&__item {
-		display: flex;
-		justify-content: space-between;
-		font-size: 1.5em;
-		& > div:not(:last-of-type) {
-			flex: 1 1 250px;
-		}
-		&-num {
-			flex: 0 1 2vw;
-			margin-right: 20px;
+	font-size: 1.5em;
+	table {
+		width: 100%;
+	}
+	thead {
+		height: 7vh;
+	}
+	td {
+		text-align: center;
+		vertical-align: top;
+	}
+	&__common-dashboard {
+		text-align: right;
+		*[data-action] {
+			cursor: pointer;
 		}
 	}
 	&__dashboard {
-		white-space: nowrap;
-	}
-	&__common-dashboard {
 		text-align: right;
 	}
 }
