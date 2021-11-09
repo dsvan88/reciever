@@ -32,7 +32,7 @@ const mainFunc = {
     },
     addUserForm: async function (event) {
         const modal = this.commonFormEventStart();
-        const data = await useFetchApi({ 'data': `{"need":"form_add-user"}` });
+        const data = await useFetchApi({ 'data': '{"need":"form_add-user"}' });
         this.commonFormEventEnd({modal, data, formSubmitAction: 'addUserFormSubmit'});
     },
     addUserFormSubmit: async function (event) {
@@ -44,7 +44,7 @@ const mainFunc = {
     },
     settingsForm: async function (event) {
         const modal = this.commonFormEventStart();
-        const data = await useFetchApi({ data:'need=form_settings' });
+        const data = await useFetchApi({ data: '{"need":"form_settings"}'});
         this.commonFormEventEnd({modal, data});
     },
     addFormField: function (event) {
@@ -52,8 +52,28 @@ const mainFunc = {
         const newIntput = oldIntput.cloneNode(true);
         newIntput.value = '';
         oldIntput.after(newIntput);
+    },
+    dashboardEvent: async function ([event, need]) {
+        if (event.target.closest('*[data-action]').classList.contains('active'))
+            return false;
+        const data = await useFetchApi({ data: `{"need":"${need}"}`});
+        console.log(data);
+    },
+    showMessagesList: function (event) {
+        this.dashboardEvent([event, 'get_messages-list'])
+    },
+    showArchiveList: function (event) {
+        this.dashboardEvent([event, 'get_archive-list'])
+    },
+    showSettingsList: function (event) {
+        this.dashboardEvent([event, 'get_settings'])
+    },
+    showUsersList: function (event) {
+        this.dashboardEvent([event, 'get_users-list'])
     }
+    
 };
+
 
 function formDataToJson(data) {
     const object = {};

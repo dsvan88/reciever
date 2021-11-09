@@ -20,18 +20,16 @@ $output['error'] = 0;
 
 try{
     if (strpos($need,'get_') !== false){
-        require "$_SERVER[DOCUMENT_ROOT]/actions/get/{$need}.php";
-        exit(json_encode($output,JSON_UNESCAPED_UNICODE));
+        require "$_SERVER[DOCUMENT_ROOT]/actions/get/$need.php";
     }
     elseif (strpos($need,'do_') !== false){
         require "$_SERVER[DOCUMENT_ROOT]/actions/perform/$need.php";
-        exit(json_encode($output,JSON_UNESCAPED_UNICODE));
     }
     elseif (strpos($need,'form_') !== false){
         require "$_SERVER[DOCUMENT_ROOT]/actions/forms/$need.php";
-        exit(json_encode($output,JSON_UNESCAPED_UNICODE));
     }
 } catch (Throwable $th) {
     $output['error'] = 1;
     $output['html'] = "Error with '$need': ".$th->getFile().':'.$th->getLine().";\r\nMessage: ".$th->getMessage()."\r\nTrace: ".$th->getTraceAsString();
 }
+exit(json_encode($output,JSON_UNESCAPED_UNICODE));

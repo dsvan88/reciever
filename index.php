@@ -27,13 +27,8 @@ if (!isset($_SESSION['id'])){
 		die(str_replace(array_keys($output),array_values($output),$template));
 	}
 }
-$output['{LEFT_ASIDE}'] = '
-		<aside>
-			<menu type="toolbar">
-				<li data-action="add-user-form">Add User</li>
-				<li data-action="settings-form">Settings</li>
-			</menu>
-		</aside>';
+$output['{LEFT_ASIDE}'] = file_get_contents(__DIR__.'/templates/left-side.html');
+
 $output['{SCRIPTS}'] = '
 	<script defer src="./js/main-funcs.js?v='.$_SERVER['REQUEST_TIME'].'"></script>
 	<script defer src="./js/modals.js?v='.$_SERVER['REQUEST_TIME'].'"></script>

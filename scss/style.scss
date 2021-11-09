@@ -17,12 +17,62 @@ body {
 		font-size: 2.5rem;
 	}
 }
+.wrapper {
+	flex: 1 0 auto;
+	display: flex;
+}
+.left-side {
+	max-width: 7vw;
+	flex: 1 0 auto;
+	display: flex;
+	justify-content: flex-end;
+	// align-items: center;
+	.dashboard {
+		padding-top: 20px;
+		list-style: none;
+		font-size: 2em;
+		&__item {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			width: 5vw;
+			border-radius: 5px 0 0 5px;
+			margin-bottom: 15px;
+			padding-top: 5px;
+			color: $mainTextBlurColor;
+			cursor: pointer;
+			transition: all $animationFast ease-in;
+			&.active {
+				background-color: #bceffb;
+			}
+			&:hover {
+				color: $mainTextColor;
+				.dashboard__bar {
+					width: 100%;
+					opacity: 1;
+				}
+			}
+		}
+		&__bar {
+			height: 5px;
+			width: 0px;
+			border-radius: 0 0 5px 5px;
+			opacity: 0;
+			background-color: $mainTextColor;
+			transition: all $animationFast ease-in;
+		}
+	}
+}
 .main {
 	flex: 1 0 auto;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	background-color: #bceffb;
+	border-radius: 5px;
+	padding: 5px;
 	.signin-form {
 		display: flex;
 		flex-direction: column;

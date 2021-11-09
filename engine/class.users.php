@@ -74,4 +74,7 @@ class Users extends Action{
         }
         return $this->getAssocArray($this->prepQuery(str_replace('{TABLE_CONTACTS}', TABLE_CONTACTS, "SELECT $keys FROM {TABLE_CONTACTS} $where"), $data['conditions']));
     }
+    public function getUsersList(){
+        return $this->getAssocArray($this->query('SELECT * FROM '.TABLE_USERS));
+    }
 }
