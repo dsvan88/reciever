@@ -28,7 +28,6 @@ class ModalWindow {
 		if (title !== "")
 			this.modal.querySelector('.modal-title').innerText = title;
 		if (buttons.length !== 0) {
-			console.log(buttons);
 			modalContainer = modalContainer || this.modal.querySelector('.modal-container');
 			const modalButtons = document.createElement('div');
 			modalButtons.className = 'modal-buttons';

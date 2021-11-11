@@ -70,6 +70,33 @@ const mainFunc = {
         document.body.querySelector('*[data-action].dashboard__item.active').classList.remove('active');
         event.target.closest('*[data-action].dashboard__item').classList.add('active');
     },
+    checkUserChange: function (event) {
+        if (event.target.value === 'all') {
+            const checkUsers = document.body.querySelectorAll('input[name="check-user"]');
+            checkUsers.forEach(checkbox => checkbox.checked = event.target.checked);
+        }
+    },
+    dashboardRedirect: function (event) {
+        if (event.target.tagName !== 'A') {
+            window.location = event.target.closest('li').querySelector('a').href;
+        }
+    },
+    deleteContact: async function (event) {
+        if (!confirm(`Are you really wanna to delete contact with id: ${event.target.dataset.contactId}`))
+            return false;
+        const modal = this.commonFormEventStart();
+        const data = await useFetchApi({ data: `{"need":"do_delete-contact","cid":"${event.target.dataset.contactId}"}`});
+        this.commonFormEventEnd({modal, data});
+    },
+    deleteUser: async function (event) {
+        const userId = event.target.closest('tr').dataset.uid;
+        if (!confirm(`Are you really wanna to delete user with id: ${userId}`))
+            return false;
+        const modal = this.commonFormEventStart();
+        const data = await useFetchApi({ data: `{"need":"do_delete-user","uid":"${userId}"}`});
+        this.commonFormEventEnd({modal, data});
+    }
+    /*
     showMessagesList: function (event) {
         this.dashboardEvent([event, 'get_messages-list']);
     },
@@ -81,16 +108,7 @@ const mainFunc = {
     },
     showUsersList: function (event) {
         this.dashboardEvent([event, 'get_users-list']);
-    },
-    checkUserChange: function (event) {
-        if (event.target.value === 'all') {
-            const checkUsers = document.body.querySelectorAll('input[name="check-user"]');
-            checkUsers.forEach(checkbox => checkbox.checked = event.target.checked);
-        }
-    },
-    deleteContact: function (event) {
-        console.log(event.target.dataset.contactId);
-    }
+    } */
 };
 
 

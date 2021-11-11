@@ -80,4 +80,10 @@ class Users extends Action{
     public function getUsersCount(){
         return $this->getColumn($this->query('SELECT COUNT(id) FROM '.TABLE_USERS));
     }
+    public function deleteUser($uid){
+        return $this->prepQuery(str_replace('{TABLE_CONTACTS}', TABLE_CONTACTS, 'DELETE FROM {TABLE_USERS} WHERE id = ? '), [$uid]);
+    }
+    public function deleteContact($cid){
+        return $this->prepQuery(str_replace('{TABLE_CONTACTS}', TABLE_CONTACTS, 'DELETE FROM {TABLE_CONTACTS} WHERE id = ? '), [$cid]);
+    }
 }

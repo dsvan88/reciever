@@ -5,14 +5,14 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/engine/class.crypt.php';
 $action = new Users();
 $usersCount = $action->getUsersCount();
 if ($usersCount === 0){
-    $output['html'] = '<h1>Nothing to show!</h1>';
+    $output['{MAIN_CONTENT}'] = '<h1>Nothing to show!</h1>';
 }
 else{
     $page = 0;
     if (isset($_GET['page']))
         $page = (int) $_GET['page'];
     $usersList = $action->getUsersList($page);
-    $output['html'] = '';
+    $output['{MAIN_CONTENT}'] = '';
     $cryptKey = $action->getCryptKey();
     $crypt = new Crypt(['key'=>$cryptKey]);
     for($x=0;$x<count($usersList);$x++){
@@ -30,7 +30,7 @@ else{
             }
         }
 
-        $output['html'] .= "
+        $output['{MAIN_CONTENT}'] .= "
         <tr class='users__item' data-uid='{$usersList[$x]['id']}'>
             <td class='users__checkbox'>
                 <input type='checkbox' name='check-user' value='$x' data-action-change='check-user-change'/>
@@ -53,44 +53,44 @@ else{
             </td>
             <td class='users__dashboard'>
                 <i class='fa fa-pencil-square-o'></i>
-                <i class='fa fa-user-times'></i>
+                <i class='fa fa-user-times' data-action='delete-user'></i>
             </td>
         </tr>
         ";
     };
 };
-$output['html'] = "
-    <main class='main users main-section'>
-        <table class='users__item'>
+$output['{MAIN_CONTENT}'] = '
+    <main class="main users main-section">
+        <table class="users__item">
             <thead>
                 <tr>
-                    <th class='users__common-checkbox'>
-                        <input type='checkbox' name='check-user' value='all' data-action-change='check-user-change'/>
+                    <th class="users__common-checkbox">
+                        <input type="checkbox" name="check-user" value="all" data-action-change="check-user-change"/>
                         #
                     </th>
-                    <th class='users__common-login'>
+                    <th class="users__common-login">
                         Login
                     </th>
-                    <th class='users__common-role'>
+                    <th class="users__common-role">
                         System role
                     </th>
-                    <th class='users__common-sites'>
+                    <th class="users__common-sites">
                         Web-sites
                     </th>
-                    <th class='users__common-emails'>
+                    <th class="users__common-emails">
                         E-mails
                     </th>
-                    <th class='users__common-tg-uids'>
+                    <th class="users__common-tg-uids">
                         Telegram IDs
                     </th>
-                    <th class='users__common-dashboard'>
-                        <i class='fa fa-user-times' data-action='delete-checked-users'></i>
-                        <i class='fa fa-user-plus' data-action='add-user-form'></i>
+                    <th class="users__common-dashboard">
+                        <i class="fa fa-user-times" data-action="delete-checked-users"></i>
+                        <i class="fa fa-user-plus" data-action="add-user-form"></i>
                     </th>
                 </tr>
             </thead>
             <tbody>
-            $output[html]
+            '.$output['{MAIN_CONTENT}'].'
             </tbody>
         </table>
-    </main>";
+    </main>';

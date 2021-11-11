@@ -7,7 +7,7 @@ $user = new Users();
 $output = [
 	'{STYLE}' => '<link rel="stylesheet" href="./css/style.css?v='.$_SERVER['REQUEST_TIME'].'" />',
 	'{SCRIPTS}' => '',
-	'{HEADER_TITLE}' => '',
+	'{HEADER_TITLE}' => 'Simple personal mail system!',
 	'{LEFT_ASIDE}' => '',
 	'{MAIN_CONTENT}' => ''
 ];
@@ -29,12 +29,16 @@ if (!isset($_SESSION['id'])){
 }
 $output['{LEFT_ASIDE}'] = file_get_contents(__DIR__.'/templates/left-side.html');
 
-$output['{SCRIPTS}'] = '
-	<script defer src="./js/main-funcs.js?v='.$_SERVER['REQUEST_TIME'].'"></script>
-	<script defer src="./js/modals.js?v='.$_SERVER['REQUEST_TIME'].'"></script>
-	<script defer src="./js/script.js?v='.$_SERVER['REQUEST_TIME'].'"></script>
-	';
+$output['{SCRIPTS}'] = "
+	<script defer src='./js/main-funcs.js?v=$_SERVER[REQUEST_TIME]'></script>
+	<script defer src='./js/modals.js?v=$_SERVER[REQUEST_TIME]'></script>
+	<script defer src='./js/script.js?v=$_SERVER[REQUEST_TIME]'></script>
+	";
 
-require $_SERVER['DOCUMENT_ROOT'].'/views/messages.php';
+if (isset($_GET['view'])){
+	require "$_SERVER[DOCUMENT_ROOT]/views/$_GET[view].php";
+}
+else
+	require $_SERVER['DOCUMENT_ROOT'].'/views/messages-list.php';
 
 echo str_replace(array_keys($output),array_values($output),$template);

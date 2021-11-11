@@ -1,10 +1,8 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'].'/engine/class.messages.php';
 
-$output['{HEADER_TITLE}'] = 'Simple personal mail system!';
-
 $messages = new Messages($_SESSION['role'] === 'admin' ? [] : ['uid'=>$_SESSION['id']]);
-$messagesCount = $messages->getMessagesCount();
+$messagesCount = $messages->getArchivedMessagesCount();
 
 if ($messagesCount === 0){
   $output['{MAIN_CONTENT}'] = '<h1>Nothing to show!</h1>';
@@ -13,7 +11,7 @@ else {
   $page = 0;
   if (isset($_GET['page']))
     $page = (int) $_GET['page'];
-  $allMessages = $messages->getMessages($page);
+  $allMessages = $messages->getArchivedMessages($page);
   $output['{MAIN_CONTENT}'] = '';
   for($x=0;$x<count($allMessages);$x++){
     $output['{MAIN_CONTENT}'] .= '

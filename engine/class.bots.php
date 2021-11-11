@@ -54,7 +54,7 @@ class MessageBot{
         $dbAction = new Action();
         $authDataCrypted = $dbAction->getAssoc($dbAction->query('SELECT * FROM '.TABLE_AUTH.' WHERE id != 0 LIMIT 1'));
 
-        $crypt = new Crypt(['value'=>$authDataCrypted['tg_uid'],'key'=>$authDataCrypted['key']]);
+        $crypt = new Crypt(['value'=>$authDataCrypted['tg_bot_token'],'key'=>$authDataCrypted['key']]);
 
         return $crypt->decrypt($authDataCrypted['tg_bot_token']);
     }
