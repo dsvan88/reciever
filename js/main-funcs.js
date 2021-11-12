@@ -106,7 +106,7 @@ const mainFunc = {
             return false;
         
         const formData = new FormData();
-        formData.append('need', 'do_user-array-delete');
+        formData.append('need', 'do_users-array-delete');
         formData.append('ids', values);
         const modal = this.commonFormEventStart();
         const data = await useFetchApi({ data: formDataToJson(formData) });
