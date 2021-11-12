@@ -31,6 +31,12 @@ try{
 } catch (Throwable $th) {
     $output['error'] = 1;
     $output['html'] = "Error with '$need': ".$th->getFile().':'.$th->getLine().";\r\nMessage: ".$th->getMessage()."\r\nTrace: ".$th->getTraceAsString();
+    $output['buttons'] = [
+        0 => [
+            'text' => 'Okay',
+            'className' => 'modal-close positive'
+        ]
+    ];
 }
 if (!isset($output['html']) && isset($output['{MAIN_CONTENT}'])){
     $output['html'] = $output['{MAIN_CONTENT}'];

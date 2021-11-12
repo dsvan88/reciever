@@ -1,7 +1,7 @@
 <?php
 
 $output = [
-	'{STYLE}' => '<link rel="stylesheet" href="../css/style.css?v='.$_SERVER['REQUEST_TIME'].'" />',
+	'{STYLE}' => "<link rel='stylesheet' href='../css/style.css?v=$_SERVER[REQUEST_TIME]' />",
 	'{SCRIPTS}' => '',
 	'{HEADER_TITLE}' => 'Init form',
 	'{LEFT_ASIDE}' => '',

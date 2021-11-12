@@ -32,13 +32,13 @@ const mainFunc = {
     },
     addUserForm: async function (event) {
         const modal = this.commonFormEventStart();
-        const data = await useFetchApi({ 'data': '{"need":"form_add-user"}' });
+        const data = await useFetchApi({ 'data': '{"need":"form_user-add"}' });
         this.commonFormEventEnd({modal, data, formSubmitAction: 'addUserFormSubmit'});
     },
     addUserFormSubmit: async function (event) {
         event.preventDefault();
         let formData = new FormData(event.target);
-        formData.append('need', 'do_add-user');
+        formData.append('need', 'do_user-add');
         const result = await useFetchApi({ 'data': formDataToJson(formData) });
         alert(result['text']);
     },
@@ -85,7 +85,7 @@ const mainFunc = {
         if (!confirm(`Are you really wanna to delete contact with id: ${event.target.dataset.contactId}`))
             return false;
         const modal = this.commonFormEventStart();
-        const data = await useFetchApi({ data: `{"need":"do_delete-contact","cid":"${event.target.dataset.contactId}"}`});
+        const data = await useFetchApi({ data: `{"need":"do_contact-delete","cid":"${event.target.dataset.contactId}"}`});
         this.commonFormEventEnd({modal, data});
     },
     deleteUser: async function (event) {
@@ -93,8 +93,37 @@ const mainFunc = {
         if (!confirm(`Are you really wanna to delete user with id: ${userId}`))
             return false;
         const modal = this.commonFormEventStart();
-        const data = await useFetchApi({ data: `{"need":"do_delete-user","uid":"${userId}"}`});
+        const data = await useFetchApi({ data: `{"need":"do_user-delete","uid":"${userId}"}`});
         this.commonFormEventEnd({modal, data});
+    },
+    deleteUsersArray: async function (event) {
+        const checkboxes = document.body.querySelectorAll('input[name="check-user"]:checked');
+        if (checkboxes.length === 0) return;
+        const values = [];
+        checkboxes.forEach(checkbox => values.push(checkbox.value));
+
+        if (!confirm(`Are you really wanna to delete user with ids: ` + values.join(', ')))
+            return false;
+        
+        const formData = new FormData();
+        formData.append('need', 'do_user-array-delete');
+        formData.append('ids', values);
+        const modal = this.commonFormEventStart();
+        const data = await useFetchApi({ data: formDataToJson(formData) });
+        this.commonFormEventEnd({modal, data});
+    },
+    editUserForm: async function (event) {
+        const userId = event.target.closest('tr').dataset.uid;
+        const modal = this.commonFormEventStart();
+        const data = await useFetchApi({ data: `{"need":"form_user-edit","uid":"${userId}"}`});
+        this.commonFormEventEnd({modal, data, formSubmitAction: 'editUserFormSubmit'});
+    },
+    editUserFormSubmit: async function (event) {
+        event.preventDefault();
+        let formData = new FormData(event.target);
+        formData.append('need', 'do_user-edit');
+        const result = await useFetchApi({ 'data': formDataToJson(formData) });
+        alert(result['text']);
     }
     /*
     showMessagesList: function (event) {
