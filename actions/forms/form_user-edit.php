@@ -3,7 +3,6 @@ $output['html'] = file_get_contents($_SERVER['DOCUMENT_ROOT'].'/templates/form_u
 $output['title'] = 'Add new User';
 
 require_once $_SERVER['DOCUMENT_ROOT'].'/engine/class.users.php';
-require_once $_SERVER['DOCUMENT_ROOT'].'/engine/class.crypt.php';
 
 $action = new Users();
 $userData = $action->getUserData(['conditions' => ['id'=>trim($_POST['uid'])]]);

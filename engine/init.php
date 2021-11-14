@@ -79,7 +79,8 @@ if (isset($_POST['email']) && isset($_POST['email-password'])){
             'email'=>$crypt->encoded,
             'password' => $crypt->encrypt(trim($_POST['email-password'])),
             'tg_bot_token' => $crypt->encrypt(trim($_POST['tg_bot_token'])),
-            'key'=> $crypt->key ],TABLE_AUTH);
+            'key'=> $crypt->key
+        ], TABLE_AUTH);
     }
     echo 'Connection to email - Done!</br>';
 }

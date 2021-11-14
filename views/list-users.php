@@ -21,7 +21,7 @@ else{
         $output['{MAIN_CONTENT}'] .= "
         <tr class='users__item' data-uid='{$usersList[$x]['id']}'>
             <td class='users__checkbox'>
-                <input type='checkbox' name='check-user' value='{$usersList[$x]['id']}' data-action-change='check-user-change'/>
+                <input type='checkbox' name='check-user' value='{$usersList[$x]['id']}' data-action-change='check-user-change' autocomplete='off'/>
                 ".($x+1).".
             </td>
             <td class='users__login'>
@@ -53,7 +53,7 @@ $output['{MAIN_CONTENT}'] = '
             <thead>
                 <tr>
                     <th class="users__common-checkbox">
-                        <input type="checkbox" name="check-user" value="all" data-action-change="check-user-change"/>
+                        <input type="checkbox" name="check-user" value="all" data-action-change="check-user-change" autocomplete="off"/>
                         #
                     </th>
                     <th class="users__common-login">
@@ -72,7 +72,7 @@ $output['{MAIN_CONTENT}'] = '
                         Telegram IDs
                     </th>
                     <th class="users__common-dashboard">
-                        <i class="fa fa-user-times" data-action="delete-users-array"></i>
+                        <i class="fa fa-user-times action-text-blur" data-action="delete-users-array"></i>
                         <i class="fa fa-user-plus" data-action="add-user-form"></i>
                     </th>
                 </tr>

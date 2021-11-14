@@ -27,7 +27,7 @@ if (!isset($_SESSION['id'])){
 		die(str_replace(array_keys($output),array_values($output),$template));
 	}
 }
-$output['{LEFT_ASIDE}'] = file_get_contents(__DIR__.'/templates/left-side.html');
+$output['{LEFT_ASIDE}'] = file_get_contents(__DIR__.'/templates/left-side-'.$_SESSION['role'].'.html');
 
 $output['{SCRIPTS}'] = "
 	<script defer src='./js/main-funcs.js?v=$_SERVER[REQUEST_TIME]'></script>
@@ -39,6 +39,6 @@ if (isset($_GET['view'])){
 	require "$_SERVER[DOCUMENT_ROOT]/views/$_GET[view].php";
 }
 else
-	require $_SERVER['DOCUMENT_ROOT'].'/views/messages-list.php';
+	require $_SERVER['DOCUMENT_ROOT'].'/views/list-messages.php';
 
 echo str_replace(array_keys($output),array_values($output),$template);

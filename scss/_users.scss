@@ -3,19 +3,37 @@
 	font-size: 1.5em;
 	table {
 		width: 100%;
+		border-spacing: 0;
+		border-radius: 5px;
+		thead {
+			height: 7vh;
+			background-color: #e6baf7;
+
+			tr {
+				&:first-of-type {
+				}
+			}
+			th {
+				padding-bottom: 10px;
+			}
+		}
+		tbody {
+			background-color: #aaecaa;
+			td {
+				margin: 0;
+				border: 0;
+				border-collapse: collapse;
+			}
+		}
 	}
-	thead {
-		height: 7vh;
-	}
+
 	td {
 		text-align: center;
 		vertical-align: top;
 	}
+
 	&__common-dashboard {
 		text-align: right;
-		*[data-action] {
-			cursor: pointer;
-		}
 	}
 	&__dashboard {
 		text-align: right;

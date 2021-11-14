@@ -106,7 +106,13 @@ class Action {
             error_log(__METHOD__.': There in no conditions for SQL UPDATE');
             die();
         }
-        $this->prepQuery(substr($query,0,-1).substr($conditon,0,-3), $data);
+        return $this->prepQuery(substr($query,0,-1).substr($conditon,0,-3), $data);
+    }
+    // Удаляет строку по её полю ID в таблице
+    public function rowDelete($id, $table = ''){
+        if ($table === '')
+            $table = TABLE_MAIN;
+        return $this->prepQuery("DELETE FROM $table WHERE id = ?", [$id]);
     }
     // Вибирает значение лишь одной колонки, быстрее, чем getRow($q)[0]
 	function getColumn($q, $n=0)

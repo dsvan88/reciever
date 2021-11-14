@@ -15,7 +15,7 @@ else {
   $output['{MAIN_CONTENT}'] = '';
   for($x=0;$x<count($allMessages);$x++){
     $output['{MAIN_CONTENT}'] .= '
-      <div class="messages__item">
+      <div class="messages__item" data-message-id="'.$allMessages[$x]['id'].'">
         <div class="messages__author">
           <div class="messages__time">
             '.date('d.m.Y H:i:s', $allMessages[$x]['time'])."
@@ -35,10 +35,9 @@ else {
           {$allMessages[$x]['message']}
         </div>
         <div class='messages__dashboard'>
-          <button><i class='fa fa-eye'></i></button>
-          <button><i class='fa fa-trash'></i></button>
-          <button><i class='fa fa-file-archive-o'></i></button>
-          <button><i class='fa fa-pencil-square-o'></i></button>
+          <button type='button' data-action='message-archive'><i class='fa fa-file-archive-o'></i></button>
+          <button type='button' data-action='message-edit'><i class='fa fa-pencil-square-o'></i></button>
+          <button type='button' data-action='message-delete'><i class='fa fa-trash'></i></button>
         </div>
       </div>
     ";

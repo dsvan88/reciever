@@ -57,13 +57,10 @@ else{
 }
 
 $contacts = $action->getUsersContacts(['columns' => '*', 'conditions' => ['uid' => $userData['uid']]]);
-if ($contacts === 0)
+if (count($contacts) === 0)
     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
 
-require_once $_SERVER['DOCUMENT_ROOT'].'/engine/class.crypt.php';
-
-$cryptKey = $action->getColumn($action->query('SELECT key FROM '.TABLE_AUTH.' WHERE id != 0 LIMIT 1'));
-
+$cryptKey = $action->getCryptKey();
 $crypt = new Crypt(['key'=>$cryptKey]);
 
 if (CFG_EMAIL){

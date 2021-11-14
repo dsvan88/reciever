@@ -75,6 +75,12 @@ const mainFunc = {
             const checkUsers = document.body.querySelectorAll('input[name="check-user"]');
             checkUsers.forEach(checkbox => checkbox.checked = event.target.checked);
         }
+        if (document.body.querySelectorAll('input[name="check-user"]:checked').length > 0){
+            document.body.querySelector('[data-action="delete-users-array"].action-text-blur').classList.remove('action-text-blur');
+        }
+        else {
+            document.body.querySelector('[data-action="delete-users-array"]').classList.add('action-text-blur');
+        }
     },
     dashboardRedirect: function (event) {
         if (event.target.tagName !== 'A') {
@@ -122,6 +128,26 @@ const mainFunc = {
         event.preventDefault();
         let formData = new FormData(event.target);
         formData.append('need', 'do_user-edit');
+        const result = await useFetchApi({ 'data': formDataToJson(formData) });
+        alert(result['text']);
+    },
+    messageArchive: async function (event) {
+        event.preventDefault();
+        const messageId = event.target.closest('div[data-message-id]').dataset.messageId;
+        const result = await useFetchApi({ 'data': `{"need":"do_message-archive","mid":"${messageId}"}` });
+        alert(result['text']);
+    },
+    messageDelete: async function (event) {
+        event.preventDefault();
+        const messageId = event.target.closest('div[data-message-id]').dataset.messageId;
+        const result = await useFetchApi({ 'data': `{"need":"do_message-delete","mid":"${messageId}"}` });
+        alert(result['text']);
+    },
+    reSetMainTechData: async function (event) {
+        event.preventDefault();
+        const form = event.target.closest('form');
+        let formData = new FormData(form);
+        formData.append('need', 'do_re-set-main-tech-data');
         const result = await useFetchApi({ 'data': formDataToJson(formData) });
         alert(result['text']);
     }

@@ -23,9 +23,10 @@ class Users extends Action{
 
         $userData = [
             'login' => $data['login'],
-            'password' => password_hash($data['password'], PASSWORD_DEFAULT)
+            'password' => password_hash(sha1($data['password']), PASSWORD_DEFAULT)
         ];
         $userData['id'] = $this->rowInsert($userData,TABLE_USERS);
+
         if (!$userData['id']) return false;
 
         $key = $this->getCryptKey();
@@ -107,11 +108,11 @@ class Users extends Action{
         return $this->getColumn($this->query('SELECT COUNT(id) FROM '.TABLE_USERS));
     }
     public function deleteUser($uid){
-        $this->prepQuery(str_replace('{TABLE_USERS}', TABLE_USERS, 'DELETE FROM {TABLE_USERS} WHERE id = ? '), [$uid]);
+        $this->rowDelete($uid, TABLE_USERS);
         $this->prepQuery(str_replace('{TABLE_CONTACTS}', TABLE_CONTACTS, 'DELETE FROM {TABLE_CONTACTS} WHERE uid = ? '), [$uid]);
         return true;
     }
     public function deleteContact($cid){
-        return $this->prepQuery(str_replace('{TABLE_CONTACTS}', TABLE_CONTACTS, 'DELETE FROM {TABLE_CONTACTS} WHERE id = ? '), [$cid]);
+        return $this->rowDelete($cid, TABLE_CONTACTS);
     }
 }

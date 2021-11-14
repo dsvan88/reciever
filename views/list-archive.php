@@ -35,10 +35,8 @@ else {
           {$allMessages[$x]['message']}
         </div>
         <div class='messages__dashboard'>
-          <button><i class='fa fa-eye'></i></button>
-          <button><i class='fa fa-trash'></i></button>
-          <button><i class='fa fa-file-archive-o'></i></button>
-          <button><i class='fa fa-pencil-square-o'></i></button>
+          <button type='button' data-action='message-edit'><i class='fa fa-pencil-square-o'></i></button>
+          <button type='button' data-action='message-delete'><i class='fa fa-trash'></i></button>
         </div>
       </div>
     ";
