@@ -4,14 +4,20 @@ require $_SERVER['DOCUMENT_ROOT'].'/libs/phpmailer/SMTP.php';
 require $_SERVER['DOCUMENT_ROOT'].'/libs/phpmailer/Exception.php';
 
 class Mailer{
-    private $message = [];
+    private $senderData = [];
     private $mail;
     public  $status = [];
-    public function __construct($array){
+    public function __construct($array = []){
 
-        $this->prepMessage($array);
+        if (count($array) > 0){
+            $this->senderData = [
+                'name'  => $array['name'],
+                'email' => $array['email'],
+            ];
+        }
+
         $this->prepMailer();
-
+        
         if (!empty($_FILES['files']['name'][0])) {
             $this->addFiles($_FILES['files']);
         }
@@ -31,23 +37,17 @@ class Mailer{
         $this->mail->Password   = $authData['password'];
         $this->mail->SMTPSecure = 'ssl';
         $this->mail->Port       = 465;
-        $this->mail->setFrom($this->message['email'], $array['name']);
 
+        if (isset($this->senderData['email']))
+            $this->mail->setFrom($this->senderData['email'], $this->senderData['name']);
+        else 
+            $this->mail->setFrom($authData['email'], $authData['name']);
         // $this->mail->addAddress('yourMainEmail@gmail.com'); // If you need send message from your main tech email to your main email - you can change it here
         $this->mail->isHTML(true);
     }
     public function prepMessage($array){
-        $this->message = [
-            'name'  => $array['name'],
-            'email' => $array['email'],
-            'text'  => $array['message'],
-            'title' => "Request from $array[name] < $array[email] >, through Resume's Contact form",
-            'body'  => "<h2>New request</h2>
-                        <b>Name:</b> $array[name]<br>
-                        <b>E-mail:</b> $array[email]<br>
-                        <b>Contact:</b> $array[contact]<br>
-                        <b>Message:</b><br>$array[message]"
-        ];
+        $this->mail->Subject    = $array['title'];
+        $this->mail->Body       = $array['body'];
     }
     public function addFiles($files){
         for ($ct = 0; $ct < count($files['tmp_name']); $ct++) {
@@ -71,9 +71,6 @@ class Mailer{
             for($x=0;$x<count($emails);$x++)
                 $this->mail->addAddress($emails[$x]);
         }
-        
-        $this->mail->Subject = $this->message['title'];
-        $this->mail->Body = $this->message['body'];
         
         return $this->mail->send(); 
     }

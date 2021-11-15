@@ -5,7 +5,7 @@ $output['title'] = 'Add new User';
 require_once $_SERVER['DOCUMENT_ROOT'].'/engine/class.users.php';
 
 $action = new Users();
-$userData = $action->getUserData(['conditions' => ['id'=>trim($_POST['uid'])]]);
+$userData = $action->getUserData(['id'=>trim($_POST['uid'])]);
 
 $replaceData = [
     '{{UserId}}' => $_POST['uid'],
@@ -15,7 +15,7 @@ $replaceData = [
     '{{UserWebsites}}' => ''
 ];
 
-$userContacts = $action->getUsersContacts(['conditions' => ['uid' => $_POST['uid']] ]);
+$userContacts = $action->getUsersContacts(['uid' => $_POST['uid']]);
 
 for($i=0;$i<count($userContacts);$i++){
     if ($userContacts[$i]['type'] ==='website'){

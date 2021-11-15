@@ -4,8 +4,8 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/engine/class.users.php';
 $action = new Users();
 
 $_POST['uid'] = trim($_POST['uid']);
-$action->rowUpdate(['login' => $_POST['login']], ['id'=>$_POST['uid']], TABLE_USERS);
-$userContacts = $action->getUsersContacts(['conditions' => ['uid'=>$_POST['uid']] ]);
+$action->rowUpdate(['login' => strtolower($_POST['login'])], ['id'=>$_POST['uid']], TABLE_USERS);
+$userContacts = $action->getUsersContacts(['uid'=>$_POST['uid']]);
 
 $contacts = $contactsDelete = $contactsAdd = [];
 
@@ -50,7 +50,6 @@ for ($i=0; $i < count($_POST['tg_uid']); $i++) {
     }
 }
 
-error_log(json_encode($contactsAdd));
 if (count($contactsAdd) > 0)
     $action->rowInsert($contactsAdd,TABLE_CONTACTS);
 

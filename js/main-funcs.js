@@ -15,6 +15,10 @@ async function useFetchApi({ url = '/switcher.php', type = "json", data = '' } =
 }
 
 const mainFunc = {
+    userLogOut: async function (event) {
+        const data = await useFetchApi({ 'data': '{"need":"do_user-log-out"}' });
+        window.location.reload();
+    },
     commonFormEventStart: function (event) {
         return new ModalWindow();
     },
@@ -149,6 +153,36 @@ const mainFunc = {
         let formData = new FormData(form);
         formData.append('need', 'do_re-set-main-tech-data');
         const result = await useFetchApi({ 'data': formDataToJson(formData) });
+        alert(result['text']);
+    },
+    userPasswordChangeForm: async function (event) {
+        event.preventDefault();
+        const modal = this.commonFormEventStart();
+        const form = event.target.closest('form');
+        const userId = form.querySelector('input[name=uid]').value;
+        const data = await useFetchApi({ 'data': `{"need":"form_user-password-change","uid":"${userId}"}` });
+        this.commonFormEventEnd({modal, data, formSubmitAction: 'userPasswordChangeFormSubmit'});
+    },
+    userPasswordChangeFormSubmit: async function (event) {
+        event.preventDefault();
+        
+        if (!confirm(`Are you really wanna to change user password?`))
+            return false;
+        
+        let formData = new FormData(event.target);
+        formData.append('need', 'do_user-password-change');
+        const result = await useFetchApi({ 'data': formDataToJson(formData) });
+        alert(result['text']);
+    },
+    userPasswordReset: async function (event) {
+        event.preventDefault();
+        
+        if (!confirm(`Are you really wanna to reset user password?
+(A new temporary password will be sent to the user on the first email)`))
+            return false;
+        const form = event.target.closest('form');
+        const userId = form.querySelector('input[name=uid]').value;
+        const result = await useFetchApi({ 'data': `{"need":"do_user-password-reset","uid":"${userId}"}` });
         alert(result['text']);
     }
     /*

@@ -13,7 +13,7 @@ else{
     $usersList = $action->getUsersList($page);
     $output['{MAIN_CONTENT}'] = '';
     for($x=0;$x<count($usersList);$x++){
-        $usersContacts = $action->getUsersContacts(['conditions' => ['uid' => $usersList[$x]['id']] ]);
+        $usersContacts = $action->getUsersContacts(['uid' => $usersList[$x]['id']]);
         $contacts = [];
         for($i=0;$i<count($usersContacts);$i++)
             $contacts[$usersContacts[$i]['type']] .= "{$usersContacts[$i]['value']} <i class='fa fa-times' data-action='delete-contact' data-contact-id='{$usersContacts[$i]['id']}'></i><br>";
@@ -49,36 +49,38 @@ else{
 };
 $output['{MAIN_CONTENT}'] = '
     <main class="main users main-section">
-        <table class="users__item">
-            <thead>
-                <tr>
-                    <th class="users__common-checkbox">
-                        <input type="checkbox" name="check-user" value="all" data-action-change="check-user-change" autocomplete="off"/>
-                        #
-                    </th>
-                    <th class="users__common-login">
-                        Login
-                    </th>
-                    <th class="users__common-role">
-                        System role
-                    </th>
-                    <th class="users__common-sites">
-                        Web-sites
-                    </th>
-                    <th class="users__common-emails">
-                        E-mails
-                    </th>
-                    <th class="users__common-tg-uids">
-                        Telegram IDs
-                    </th>
-                    <th class="users__common-dashboard">
-                        <i class="fa fa-user-times action-text-blur" data-action="delete-users-array"></i>
-                        <i class="fa fa-user-plus" data-action="add-user-form"></i>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-            '.$output['{MAIN_CONTENT}'].'
-            </tbody>
-        </table>
+        <div class="users__wrapper">
+            <table class="users__table">
+                <thead>
+                    <tr>
+                        <th class="users__common-checkbox">
+                            <input type="checkbox" name="check-user" value="all" data-action-change="check-user-change" autocomplete="off"/>
+                            #
+                        </th>
+                        <th class="users__common-login">
+                            Login
+                        </th>
+                        <th class="users__common-role">
+                            System role
+                        </th>
+                        <th class="users__common-sites">
+                            Web-sites
+                        </th>
+                        <th class="users__common-emails">
+                            E-mails
+                        </th>
+                        <th class="users__common-tg-uids">
+                            Telegram IDs
+                        </th>
+                        <th class="users__common-dashboard">
+                            <i class="fa fa-user-times action-text-blur" data-action="delete-users-array"></i>
+                            <i class="fa fa-user-plus" data-action="add-user-form"></i>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                '.$output['{MAIN_CONTENT}'].'
+                </tbody>
+            </table>
+        </div>
     </main>';

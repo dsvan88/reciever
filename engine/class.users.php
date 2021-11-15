@@ -13,6 +13,18 @@ class Users extends Action{
         }
         return false;
     }
+    public function logout(){
+        $_SESSION = array();
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000,
+                $params["path"], $params["domain"],
+                $params["secure"], $params["httponly"]
+            );
+        }
+        session_destroy();
+        return true;
+    }
     public function getCryptKey(){
         return $this->getColumn($this->query(str_replace('{TABLE_AUTH}', TABLE_AUTH, 'SELECT key FROM {TABLE_AUTH} WHERE id = 1 LIMIT 1')));
     }
@@ -22,7 +34,7 @@ class Users extends Action{
             return false;
 
         $userData = [
-            'login' => $data['login'],
+            'login' => strtolower($data['login']),
             'password' => password_hash(sha1($data['password']), PASSWORD_DEFAULT)
         ];
         $userData['id'] = $this->rowInsert($userData,TABLE_USERS);
@@ -58,37 +70,46 @@ class Users extends Action{
         };
         $this->rowInsert($contacts,TABLE_CONTACTS);
     }
-    public function getUserData($data = ['columns' => '*', 'conditions' => [] ]){
-        if (!is_array($data['columns']))
-            $keys = '*';
-        else
-            $keys = implode(',', $data['columns']);
-
-        $where = '';
-        if (count($data['conditions']) !== 0){
-            $where = ' WHERE ';
-            foreach($data['conditions'] as $k=>$v){
-				$where .= $k." = :$k OR ";
-            }
-            $where = substr($where, 0, -4);
+    public function changeUserPassword($data){
+        $oldPassword = $this->getColumn($this->prepQuery(str_replace('{TABLE_USERS}', TABLE_USERS, 'SELECT password,role FROM {TABLE_USERS} WHERE id = ? LIMIT 1'),[$data['uid']]));
+        if (password_verify($data['old_password'], $oldPassword)){
+            $this->rowUpdate(['password'=>password_hash($data['password'],PASSWORD_DEFAULT)], ['id' => $data['uid']], TABLE_USERS);
+            return true;
         }
-        return $this->getAssoc($this->prepQuery(str_replace('{TABLE_USERS}', TABLE_USERS, "SELECT $keys FROM {TABLE_USERS} $where"), $data['conditions']));
+        return 'Old password incorrect!';
     }
-    public function getUsersContacts($data = ['columns' => '*', 'conditions' => [] ]){
-        if (!is_array($data['columns']))
-            $keys = '*';
+    public function resetUserPassword($uid){
+        $tempPassword = $this->generateRandomString(mt_rand(7, 13));
+        $this->rowUpdate(['password'=>password_hash(sha1($tempPassword),PASSWORD_DEFAULT)], ['id' => $uid], TABLE_USERS);
+        return $tempPassword;
+    }
+    public function getUserData($conditions = [], $columns = '*'){
+        if (!is_array($columns))
+            $keys = $columns;
         else
-            $keys = implode(',', $data['columns']);
+            $keys = implode(',', $columns);
 
         $where = '';
-        if (count($data['conditions']) !== 0){
+        if (count($conditions) !== 0){
             $where = ' WHERE ';
-            foreach($data['conditions'] as $k=>$v){
+            foreach($conditions as $k=>$v){
 				$where .= $k." = :$k OR ";
             }
             $where = substr($where, 0, -4);
         }
-        return $this->decryptContacts($this->getAssocArray($this->prepQuery(str_replace('{TABLE_CONTACTS}', TABLE_CONTACTS, "SELECT $keys FROM {TABLE_CONTACTS} $where"), $data['conditions'])));
+        return $this->getAssoc($this->prepQuery(str_replace('{TABLE_USERS}', TABLE_USERS, "SELECT $keys FROM {TABLE_USERS} $where"), $conditions));
+    }
+    public function getUsersContacts($conditions = [], $clue = 'OR'){
+
+        $where = '';
+        if (count($conditions) !== 0){
+            $where = ' WHERE ';
+            foreach($conditions as $k=>$v){
+				$where .= $k." = :$k $clue ";
+            }
+            $where = substr($where, 0, -(strlen($clue)+2));
+        }
+        return $this->decryptContacts($this->getAssocArray($this->prepQuery(str_replace('{TABLE_CONTACTS}', TABLE_CONTACTS, "SELECT * FROM {TABLE_CONTACTS} $where ORDER BY id ASC"), $conditions)));
     }
     public function decryptContacts($contacts){
 
@@ -102,7 +123,7 @@ class Users extends Action{
         return $contacts;
     }
     public function getUsersList(){
-        return $this->getAssocArray($this->query('SELECT * FROM '.TABLE_USERS));
+        return $this->getAssocArray($this->query('SELECT * FROM '.TABLE_USERS.' ORDER BY id ASC'));
     }
     public function getUsersCount(){
         return $this->getColumn($this->query('SELECT COUNT(id) FROM '.TABLE_USERS));

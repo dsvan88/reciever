@@ -12,9 +12,24 @@ body {
 	padding: 5px 10px;
 }
 .header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0px 10px 0px 25px;
 	&__title {
 		text-align: center;
 		font-size: 2.5rem;
+	}
+	&__logo {
+		width: 10vw;
+		&-image {
+			width: 100%;
+			filter: invert(100%) sepia(100%) saturate(500%) brightness(50%) hue-rotate(180deg);
+		}
+	}
+	&__exit {
+		font-size: 4em;
+		color: $mainTextBlurColor;
 	}
 }
 .wrapper {

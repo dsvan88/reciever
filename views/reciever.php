@@ -7,7 +7,7 @@ $source = str_replace(['http://','https://', 'www.'],'',$_SERVER['HTTP_ORIGIN'])
 if (($pos = strrpos($source,'/')) !== false)
     $source = substr($source, 0, $pos);
 
-$userData = $action->getUsersContacts(['columns' => ['uid','value'], 'conditions' => ['value' => $source] ])[0];
+$userData = $action->getUsersContacts(['value' => $source])[0];
 
 if (isset($userData['value'])){
     header("Access-Control-Allow-Origin: $_SERVER[HTTP_ORIGIN]");
@@ -56,7 +56,7 @@ else{
     ];
 }
 
-$contacts = $action->getUsersContacts(['columns' => '*', 'conditions' => ['uid' => $userData['uid']]]);
+$contacts = $action->getUsersContacts(['uid' => $userData['uid']]);
 if (count($contacts) === 0)
     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
 
@@ -70,10 +70,20 @@ if (CFG_EMAIL){
 
     foreach($contacts as $row=>$column){
         if ($column['type'] !== 'email') continue;
-        $emails[] = $crypt->decrypt($column['value']);
+        $emails[] = $column['value'];
     }
     if (count($emails) > 0){
         $mailer = new Mailer($array);
+
+        $mailer->prepMessage([
+            'title' => "Request from $array[name] < $array[email] >, through Resume's Contact form",
+            'body'  => "<h2>New request</h2>
+                        <b>Name:</b> $array[name]<br>
+                        <b>E-mail:</b> $array[email]<br>
+                        <b>Contact:</b> $array[contact]<br>
+                        <b>Message:</b><br>$array[message]"
+        ]);
+
         try {
             $result['text'] .= $mailer->send($emails) ? '<div>Email send.</div>' : '<div>Email not send!</div>';
         }
@@ -90,7 +100,7 @@ if (CFG_BOTS){
     $tg_uIDs = [];
     foreach($contacts as $row=>$column){
         if ($column['type'] !== 'tg_uid') continue;
-        $tg_uIDs[] = $crypt->decrypt($column['value']);
+        $tg_uIDs[] = $column['value'];
     }
     if (count($tg_uIDs) > 0){
         $bot = new MessageBot();

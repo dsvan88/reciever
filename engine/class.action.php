@@ -143,4 +143,13 @@ class Action {
 		$r = null;
 		return $a;
 	}
+    function generateRandomString($length = 16) {
+        $chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $max = strlen($chars)-1;
+        $result = '';
+        for($i = 0; $i < $length; $i++) {
+            $result .= $chars[mt_rand(0, $max)];
+        }
+        return $result;
+    }
 }

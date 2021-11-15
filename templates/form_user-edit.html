@@ -9,8 +9,10 @@
 			<input type="hidden" name="uid" value="{{UserId}}" />
 			<input class="new-user-form__input" type="text" name="login" placeholder="Username" value="{{UserName}}" autofocus />
 		</div>
-		<div class="new-user-form__row">
-			<button type="button" class="positive" data-action="change-user-password-form">Change</button>
+		<h3>Password</h3>
+		<div class="modal-buttons">
+			<button type="button" class="positive" data-action="user-password-change-form">Change</button>
+			<button type="button" class="positive" data-action="user-password-reset">Reset</button>
 		</div>
 		<h3>Technical Data</h3>
 		<div class="new-user-form__row-expand_vertical">{{UserEmails}}</div>
