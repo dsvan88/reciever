@@ -28,6 +28,8 @@ if (strpos($contentType,'application/json') !==  false) {
     }
 }
 
+$_POST = str_replace("'",'’',$_POST);
+
 $array=['name'=>'-','email'=>'-','contact'=>'-','message'=>'-'];
 foreach($array as $key=>$value){
     if (isset($_POST["customer-$key"]))

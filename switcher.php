@@ -16,6 +16,8 @@ $need = trim(isset($_GET['need']) ? $_GET['need'] : $_POST['need']);
 if ($need==='') 
     die('{"error":"1","title":"Error!","html":"Wrong `need` type."}');
 
+$_POST = str_replace("'",'’',$_POST);
+
 if (!session_id()){
     session_start();
 }
