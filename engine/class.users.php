@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once __DIR__.'/class.action.php';
 require_once __DIR__.'/class.crypt.php';
 

@@ -217,15 +217,17 @@ body {
 @import "modals";
 
 .modal {
-	.new-user-form {
+	.common-form {
 		display: flex;
 		flex-direction: column;
 		justify-content: stretch;
+		max-height: 85vh;
 		&__logo {
 			width: 100px;
 		}
 		&__row-expand_vertical {
-			max-height: 10vh;
+			min-height: 50px;
+			max-height: 20vh;
 			overflow-x: hidden;
 			overflow-y: auto;
 			margin-bottom: 10px;
@@ -236,10 +238,19 @@ body {
 			display: block;
 			width: 40vw;
 			margin: 5px 10px;
+			font-size: 1.5em;
 			text-align: center;
+		}
+		&__textarea {
+			display: block;
+			width: 40vw;
+			margin: 5px 10px;
+			resize: vertical;
+			font-size: 1.5em;
 		}
 	}
 }
+
 *[data-action] {
 	cursor: pointer;
 	transition: all $animationFast ease-in;

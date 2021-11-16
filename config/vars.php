@@ -24,6 +24,7 @@ if (!defined('SQL_HOST'))
 	define('TABLE_USERS', 'users');
 	define('TABLE_AUTH', 'auth');
 	define('TABLE_CONTACTS', 'contacts');
+	define('TABLE_NOTES', 'notes');
 }
 
 if (CFG_DEBUG){

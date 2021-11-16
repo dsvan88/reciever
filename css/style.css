@@ -3994,7 +3994,7 @@ body {
   text-align: center;
 }
 
-.modal .new-user-form {
+.modal .common-form {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -4005,14 +4005,16 @@ body {
   -webkit-box-pack: stretch;
       -ms-flex-pack: stretch;
           justify-content: stretch;
+  max-height: 85vh;
 }
 
-.modal .new-user-form__logo {
+.modal .common-form__logo {
   width: 100px;
 }
 
-.modal .new-user-form__row-expand_vertical {
-  max-height: 10vh;
+.modal .common-form__row-expand_vertical {
+  min-height: 50px;
+  max-height: 20vh;
   overflow-x: hidden;
   overflow-y: auto;
   margin-bottom: 10px;
@@ -4020,11 +4022,20 @@ body {
   scrollbar-width: thin;
 }
 
-.modal .new-user-form__input {
+.modal .common-form__input {
   display: block;
   width: 40vw;
   margin: 5px 10px;
+  font-size: 1.5em;
   text-align: center;
+}
+
+.modal .common-form__textarea {
+  display: block;
+  width: 40vw;
+  margin: 5px 10px;
+  resize: vertical;
+  font-size: 1.5em;
 }
 
 *[data-action] {

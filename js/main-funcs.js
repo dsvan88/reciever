@@ -55,7 +55,11 @@ const mainFunc = {
         const oldIntput = event.target.closest('div').querySelector('input');
         const newIntput = oldIntput.cloneNode(true);
         newIntput.value = '';
-        oldIntput.after(newIntput);
+        
+        if (event.target.parentElement.tagName !== 'div')
+            event.target.parentElement.before(newIntput);
+        else
+            event.target.before(newIntput);
     },
     dashboardEvent: async function ([event, need]) {
         if (event.target.closest('*[data-action].dashboard__item').classList.contains('active'))
@@ -145,6 +149,19 @@ const mainFunc = {
         event.preventDefault();
         const messageId = event.target.closest('div[data-message-id]').dataset.messageId;
         const result = await useFetchApi({ 'data': `{"need":"do_message-delete","mid":"${messageId}"}` });
+        alert(result['text']);
+    },
+    messageEditForm: async function (event) {
+        const messageId = event.target.closest('div[data-message-id]').dataset.messageId;
+        const modal = this.commonFormEventStart();
+        const data = await useFetchApi({ data: `{"need":"form_message-edit","mid":"${messageId}"}`});
+        this.commonFormEventEnd({modal, data, formSubmitAction: 'messageEditFormSubmit'});
+    },
+    messageEditFormSubmit: async function (event) {
+        event.preventDefault();
+        let formData = new FormData(event.target);
+        formData.append('need', 'do_message-edit');
+        const result = await useFetchApi({ 'data': formDataToJson(formData) });
         alert(result['text']);
     },
     reSetMainTechData: async function (event) {

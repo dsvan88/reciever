@@ -19,13 +19,13 @@ $userContacts = $action->getUsersContacts(['uid' => $_POST['uid']]);
 
 for($i=0;$i<count($userContacts);$i++){
     if ($userContacts[$i]['type'] ==='website'){
-        $replaceData['{{UserWebsites}}'] .= "<input class='new-user-form__input' type='text' name='website[]' value='{$userContacts[$i]['value']}' placeholder='website.com'/>";
+        $replaceData['{{UserWebsites}}'] .= "<input class='common-form__input' type='text' name='website[]' value='{$userContacts[$i]['value']}' placeholder='website.com'/>";
     }
     elseif ($userContacts[$i]['type'] ==='email'){
-        $replaceData['{{UserEmails}}'] .= "<input class='new-user-form__input' type='email' name='email[]' value='{$userContacts[$i]['value']}' placeholder='E-mail'/>";
+        $replaceData['{{UserEmails}}'] .= "<input class='common-form__input' type='email' name='email[]' value='{$userContacts[$i]['value']}' placeholder='E-mail'/>";
     }
     elseif ($userContacts[$i]['type'] ==='tg_uid'){
-        $replaceData['{{UserTelegramIDs}}'] .= "<input class='new-user-form__input' type='text' name='tg_uid[]' value='{$userContacts[$i]['value']}' placeholder='Telegram UserID'/>";
+        $replaceData['{{UserTelegramIDs}}'] .= "<input class='common-form__input' type='text' name='tg_uid[]' value='{$userContacts[$i]['value']}' placeholder='Telegram UserID'/>";
     }
 }
 

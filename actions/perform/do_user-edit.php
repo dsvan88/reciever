@@ -4,7 +4,15 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/engine/class.users.php';
 $action = new Users();
 
 $_POST['uid'] = trim($_POST['uid']);
-$action->rowUpdate(['login' => strtolower($_POST['login'])], ['id'=>$_POST['uid']], TABLE_USERS);
+if ($_SESSION['role'] !== 'admin' && $_POST['uid'] !== $_SESSION['id']){
+    die('{"error":"1","title":"Error!","html":"You cann’t modify other user’s data."}');
+}
+
+$data['login'] = strtolower(htmlspecialchars($_POST['login']));
+
+if (!$action->recordExists(['login' => $data['login']],TABLE_USERS))
+    $action->rowUpdate(['login' => $data['login']], ['id'=>$_POST['uid']], TABLE_USERS);
+
 $userContacts = $action->getUsersContacts(['uid'=>$_POST['uid']]);
 
 $contacts = $contactsDelete = $contactsAdd = [];

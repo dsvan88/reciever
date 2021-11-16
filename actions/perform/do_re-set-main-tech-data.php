@@ -1,6 +1,10 @@
 <?php
 require $_SERVER['DOCUMENT_ROOT'].'/engine/class.users.php';
 
+if ($_SESSION['role'] !== 'admin'){
+    die('{"error":"1","title":"Error!","html":"You cann’t modify main tech data."}');
+}
+
 $action = new Users();
 
 $array = [];

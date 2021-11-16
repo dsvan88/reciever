@@ -1,4 +1,7 @@
 <?php
+if (!session_id()){
+    session_start();
+}
 require_once __DIR__.'/engine/class.users.php';
 
 $template = file_get_contents(__DIR__.'/templates/main-template.html');
@@ -7,8 +10,7 @@ $user = new Users();
 $output = [
 	'{STYLE}' => '<link rel="stylesheet" href="./css/style.css?v='.$_SERVER['REQUEST_TIME'].'" />',
 	'{SCRIPTS}' => '',
-	'{HEADER_TITLE}' => 'Simple personal mail system!',
-	'{HEADER_LOGOUT}' => '<div></div>',
+	'{HEADER_CONTENT}' => file_get_contents(__DIR__.'/templates/header-content.html'),
 	'{LEFT_ASIDE}' => '',
 	'{MAIN_CONTENT}' => ''
 ];
@@ -30,7 +32,7 @@ if (!isset($_SESSION['id'])){
 }
 
 $output['{LEFT_ASIDE}'] = file_get_contents(__DIR__.'/templates/left-side-'.$_SESSION['role'].'.html');
-$output['{HEADER_LOGOUT}'] = '<div class="header__exit" data-action="user-log-out" title="Logout"><i class="fa fa-sign-out"></i></div>';
+$output['{HEADER_CONTENT}'] .= '<div class="header__exit" data-action="user-log-out" title="Logout"><i class="fa fa-sign-out"></i></div>';
 
 $output['{SCRIPTS}'] = "
 	<script defer src='./js/main-funcs.js?v=$_SERVER[REQUEST_TIME]'></script>

@@ -1,6 +1,10 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'].'/engine/class.users.php';
 
+if ($_SESSION['role'] !== 'admin'){
+    die('{"error":"1","title":"Error!","html":"You cann’t delete users contacts."}');
+}
+
 $user = new Users();
 
 if ($user->deleteContact($_POST['cid'])){

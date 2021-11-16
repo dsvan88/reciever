@@ -23,6 +23,22 @@ class Messages extends Action {
         }
         return $this->getAssocArray($this->prepQuery('SELECT * FROM '.TABLE_MAIN.'  WHERE status = ? AND uid = ? ORDER BY id DESC'.$limit, ['new',$this->uid]));
     }
+    public function getMessageData($conditions = [], $columns = '*'){
+        if (!is_array($columns))
+            $keys = $columns;
+        else
+            $keys = implode(',', $columns);
+
+        $where = '';
+        if (count($conditions) !== 0){
+            $where = ' WHERE ';
+            foreach($conditions as $k=>$v){
+				$where .= $k." = :$k OR ";
+            }
+            $where = substr($where, 0, -4);
+        }
+        return $this->getAssoc($this->prepQuery(str_replace('{TABLE_MAIN}', TABLE_MAIN, "SELECT $keys FROM {TABLE_MAIN} $where"), $conditions));
+    }
     public function getArchivedMessagesCount(){
         if ($this->uid === 0)
             return $this->getColumn($this->prepQuery('SELECT COUNT(id) FROM '.TABLE_MAIN.' WHERE status = ? ', ['archive']));

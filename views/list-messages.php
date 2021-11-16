@@ -32,11 +32,12 @@ else {
         </div>
         <div class='messages__text'>
           <h4>Send from < {$allMessages[$x]['source']} ></h4>
-          {$allMessages[$x]['message']}
+          <p>{$allMessages[$x]['message']}</p>
+          <p class='messages__notes'></p>
         </div>
         <div class='messages__dashboard'>
           <button type='button' data-action='message-archive'><i class='fa fa-file-archive-o'></i></button>
-          <button type='button' data-action='message-edit'><i class='fa fa-pencil-square-o'></i></button>
+          <button type='button' data-action='message-edit-form'><i class='fa fa-pencil-square-o'></i></button>
           <button type='button' data-action='message-delete'><i class='fa fa-trash'></i></button>
         </div>
       </div>
