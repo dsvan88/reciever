@@ -8,17 +8,31 @@ if ($messagesCount === 0){
   $output['{MAIN_CONTENT}'] = '<h1>Nothing to show!</h1>';
 }
 else {
+  require_once $_SERVER['DOCUMENT_ROOT'].'/engine/class.notes.php';
+  
+  $notesAction = new Notes();
+
   $page = 0;
   if (isset($_GET['page']))
     $page = (int) $_GET['page'];
   $allMessages = $messages->getMessages($page);
   $output['{MAIN_CONTENT}'] = '';
   for($x=0;$x<count($allMessages);$x++){
-    $output['{MAIN_CONTENT}'] .= '
-      <div class="messages__item" data-message-id="'.$allMessages[$x]['id'].'">
-        <div class="messages__author">
-          <div class="messages__time">
-            '.date('d.m.Y H:i:s', $allMessages[$x]['time'])."
+
+    $notesCount = $notesAction->getNotesCount($allMessages[$x]['id']);
+    $notesButton = '';
+    if ($notesCount)
+        $notesButton = '
+          <h3 class="messages__notes-toogle" data-action="notes-block-toggle">< Show notes ></h3>
+        ';
+
+    $time = date('d.m.Y H:i:s', $allMessages[$x]['time']);
+    
+    $output['{MAIN_CONTENT}'] .= "
+      <div class='messages__item' data-message-id='{$allMessages[$x]['id']}'>
+        <div class='messages__author'>
+          <div class='messages__time'>
+            $time
           </div>
           <div class='messages__author-name'>
             {$allMessages[$x]['name']}
@@ -33,7 +47,9 @@ else {
         <div class='messages__text'>
           <h4>Send from < {$allMessages[$x]['source']} ></h4>
           <p>{$allMessages[$x]['message']}</p>
-          <p class='messages__notes'></p>
+          <div class='messages__notes'>
+          </div>
+          $notesButton
         </div>
         <div class='messages__dashboard'>
           <button type='button' data-action='message-archive'><i class='fa fa-file-archive-o'></i></button>

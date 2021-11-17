@@ -11,7 +11,7 @@ else {
 			<source srcset="../images/logo.webp" type="image/webp" />
 			<img title="My logo" alt="My logo" src="./images/logo.png" />
 		</picture>
-		<input type="email" name="email" placeholder="E-mail" />
+		<input type="email" name="email" placeholder="Tech E-mail" />
 		<input type="password" name="email-password" placeholder="E-mail password" />
 		<input type="text" name="tg_bot_token" placeholder="Telegram BotToken" />
 		<button type="button" data-action="re-set-main-tech-data">Re-set main tech data</button>

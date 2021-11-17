@@ -20,7 +20,7 @@ class Notes {
             $limit = ' LIMIT '.CFG_MESSAGE_PER_PAGE.' OFFSET '.(CFG_MESSAGE_PER_PAGE*$page);
         return $this->action->getAssocArray($this->action->prepQuery('SELECT * FROM '.TABLE_NOTES.' WHERE mid = ? ORDER BY id DESC'.$limit, [$mid]));
     }
-    public function getNotesData($conditions = [], $columns = '*'){
+    public function getNoteData($conditions = [], $columns = '*'){
         if (!is_array($columns))
             $keys = $columns;
         else

@@ -1,9 +1,26 @@
 .messages {
 	display: block;
+	&__common-dashboard {
+		padding: 5px;
+		margin-bottom: 10px;
+		display: flex;
+		justify-content: flex-end;
+		background: linear-gradient(90deg, #bceffb 45%, #f4ddec);
+		border-radius: 5px;
+		font-size: 1.1em;
+		input {
+			border-radius: 10px;
+			border: 1px solid $mainTextColor;
+			padding-left: 10px;
+			&[placeholder] {
+				font-style: italic;
+			}
+		}
+	}
 	&__item {
 		position: relative;
 		box-shadow: 2px 2px 5px 0px #5252f3;
-		background: linear-gradient(170deg, #e8e7f0, #bd56c6);
+		background: linear-gradient(90deg, #e8e7f0, #bd56c6);
 		display: flex;
 		justify-content: space-between;
 		margin-bottom: 5px;
@@ -25,6 +42,32 @@
 			border-style: solid;
 			border-width: 0.5em 0.8em 0.5em 0.8em;
 			border-color: transparent transparent transparent $mainTextColor;
+		}
+	}
+	&__notes {
+		&-item {
+			display: flex;
+			border: 1px solid #c2a5d7;
+			border-radius: 3px;
+			margin: 5px 0px 5px 100px;
+			padding: 10px 5px;
+		}
+		&-saved {
+			display: none;
+		}
+		&-toogle {
+			margin-top: 15px;
+			text-align: center;
+		}
+
+		&-tech-data {
+			font-size: 0.4em;
+			font-weight: 100;
+		}
+		&-content {
+			font-size: 0.6em;
+			margin-left: 10px;
+			max-width: 45vw;
 		}
 	}
 	&__author {
@@ -67,6 +110,7 @@
 	&__dashboard {
 		display: flex;
 		flex-direction: column;
+		position: relative;
 		button {
 			color: $mainTextBlurColor;
 			cursor: pointer;
@@ -78,7 +122,9 @@
 				color: $mainTextColor;
 			}
 			&:last-of-type {
-				margin-top: 25px;
+				width: 100%;
+				position: absolute;
+				bottom: 0px;
 			}
 		}
 	}

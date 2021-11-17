@@ -3654,11 +3654,37 @@ body {
   display: block;
 }
 
+.messages__common-dashboard {
+  padding: 5px;
+  margin-bottom: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  background: -webkit-gradient(linear, left top, right top, color-stop(45%, #bceffb), to(#f4ddec));
+  background: linear-gradient(90deg, #bceffb 45%, #f4ddec);
+  border-radius: 5px;
+  font-size: 1.1em;
+}
+
+.messages__common-dashboard input {
+  border-radius: 10px;
+  border: 1px solid #291975;
+  padding-left: 10px;
+}
+
+.messages__common-dashboard input[placeholder] {
+  font-style: italic;
+}
+
 .messages__item {
   position: relative;
   -webkit-box-shadow: 2px 2px 5px 0px #5252f3;
           box-shadow: 2px 2px 5px 0px #5252f3;
-  background: linear-gradient(170deg, #e8e7f0, #bd56c6);
+  background: -webkit-gradient(linear, left top, right top, from(#e8e7f0), to(#bd56c6));
+  background: linear-gradient(90deg, #e8e7f0, #bd56c6);
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -3689,6 +3715,36 @@ body {
   border-style: solid;
   border-width: 0.5em 0.8em 0.5em 0.8em;
   border-color: transparent transparent transparent #291975;
+}
+
+.messages__notes-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  border: 1px solid #c2a5d7;
+  border-radius: 3px;
+  margin: 5px 0px 5px 100px;
+  padding: 10px 5px;
+}
+
+.messages__notes-saved {
+  display: none;
+}
+
+.messages__notes-toogle {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.messages__notes-tech-data {
+  font-size: 0.4em;
+  font-weight: 100;
+}
+
+.messages__notes-content {
+  font-size: 0.6em;
+  margin-left: 10px;
+  max-width: 45vw;
 }
 
 .messages__author {
@@ -3747,6 +3803,7 @@ body {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  position: relative;
 }
 
 .messages__dashboard button {
@@ -3765,7 +3822,9 @@ body {
 }
 
 .messages__dashboard button:last-of-type {
-  margin-top: 25px;
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
 }
 
 .messages__links {
@@ -3830,7 +3889,7 @@ body {
 
 .users table thead {
   height: 7vh;
-  background-color: #e6baf7;
+  background-color: #f4ddec;
 }
 
 .users table thead th {

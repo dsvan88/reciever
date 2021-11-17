@@ -201,20 +201,28 @@ const mainFunc = {
         const userId = form.querySelector('input[name=uid]').value;
         const result = await useFetchApi({ 'data': `{"need":"do_user-password-reset","uid":"${userId}"}` });
         alert(result['text']);
+    },
+    notesBlockToggle: async function (event) {
+        const notesBlock = event.target.parentElement.querySelector('.messages__notes');
+        let savedNotes = event.target.parentElement.querySelector('div.messages__notes-saved');
+        let html = '';
+
+        if (!savedNotes) {
+            const messageId = event.target.closest('[data-message-id]').dataset.messageId;
+            const result = await useFetchApi({ 'data': `{"need":"get_notes-data","mid":"${messageId}"}` });
+            
+            savedNotes = document.createElement('div');
+            savedNotes.className = 'messages__notes-saved';
+            notesBlock.after(savedNotes);
+            html = result['html'];
+        }
+        else {
+            html = savedNotes.innerHTML;
+            savedNotes.innerHTML = notesBlock.innerHTML;
+        }
+        event.target.innerText = event.target.innerText === '< Show notes >' ? '< Hide notes >' : '< Show notes >'
+        notesBlock.innerHTML = html;
     }
-    /*
-    showMessagesList: function (event) {
-        this.dashboardEvent([event, 'get_messages-list']);
-    },
-    showArchiveList: function (event) {
-        this.dashboardEvent([event, 'get_archive-list']);
-    },
-    showSettingsList: function (event) {
-        this.dashboardEvent([event, 'get_settings']);
-    },
-    showUsersList: function (event) {
-        this.dashboardEvent([event, 'get_users-list']);
-    } */
 };
 
 

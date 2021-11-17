@@ -9,7 +9,7 @@ $criteria = ['id'=>$_POST['mid']];
 if($_SESSION['role'] !== 'admin')
     $criteria['uid'] = $_SESSION['id'];
 
-if ($action->recordExists(['id'=>$_POST['mid']],TABLE_MAIN,'AND')){
+if ($action->recordExists($criteria,TABLE_MAIN,'AND')){
     $action->setMessageArchive($_POST['mid']);
     $output['text'] = 'Done!';
 }
