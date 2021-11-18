@@ -276,6 +276,7 @@ function formDataToJson(data) {
     });
     return JSON.stringify(object);
 }
+
 function camelize(str) {
 	return str
 		.split("-") // разбивает 'my-long-word' на массив ['my', 'long', 'word']

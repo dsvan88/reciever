@@ -9,7 +9,8 @@ body {
 	flex-direction: column;
 	font-size: $mainFontSize;
 	color: $mainTextColor;
-	padding: 5px 10px;
+	padding: 5px 20px;
+	box-sizing: border-box;
 }
 .header {
 	display: flex;
@@ -88,7 +89,8 @@ body {
 	border-radius: 5px;
 	padding: 5px;
 	&.main-section {
-		background-color: #bceffb;
+		// background-color: #bceffb;
+		background: linear-gradient(100deg, #bceffb, transparent);
 	}
 	.signin-form {
 		display: flex;
