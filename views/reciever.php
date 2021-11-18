@@ -28,12 +28,10 @@ if (strpos($contentType,'application/json') !==  false) {
     }
 }
 
-$_POST = str_replace("'",'’',$_POST);
-
 $array=['name'=>'-','email'=>'-','contact'=>'-','message'=>'-'];
 foreach($array as $key=>$value){
     if (isset($_POST["customer-$key"]))
-        $array[$key] = urldecode(htmlspecialchars(trim($_POST["customer-$key"])));
+        $array[$key] = str_replace("'",'’', urldecode(htmlspecialchars(trim($_POST["customer-$key"]))));
 }
 if ($array['name'] === '-' && $array['email'] === '-' && $array['contact'] === '-' && $array['message'] === '-'){
     die('{"error":"1","title":"Error!","text":"Error: Nothing to send."}');

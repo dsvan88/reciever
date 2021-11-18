@@ -14,8 +14,5 @@ for ($i=0; $i < count($ids); $i++) {
 
 $output['html'] = '<div class="modal-container">Done!</div>';
         $output['buttons'] = [ 
-            0=> [
-                'text'=>'Okay',
-                'className'=>'modal-close'
-            ]
+            [ 'text'=>'Okay', 'className'=>'modal-close modal-reload-page']
         ];

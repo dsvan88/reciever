@@ -113,10 +113,10 @@ const mainFunc = {
         }
     },
     contactDelete: async function (event) {
-        if (!confirm(`Are you really wanna to delete contact with id: ${event.target.dataset.cId}`))
+        if (!confirm(`Are you really wanna to delete contact with id: ${event.target.dataset.cid}`))
             return false;
         const modal = this.commonFormEventStart();
-        const data = await useFetchApi({ data: `{"need":"do_contact-delete","cid":"${event.target.dataset.cId}"}`});
+        const data = await useFetchApi({ data: `{"need":"do_contact-delete","cid":"${event.target.dataset.cid}"}`});
         this.commonFormEventEnd({modal, data});
     },
     messageArchive: async function (event) {
@@ -124,12 +124,16 @@ const mainFunc = {
         const messageId = event.target.closest('div[data-message-id]').dataset.messageId;
         const result = await useFetchApi({ 'data': `{"need":"do_message-archive","mid":"${messageId}"}` });
         alert(result['text']);
+        if (result['error'] == '0')
+            window.location = window.location.href;
     },
     messageDelete: async function (event) {
         event.preventDefault();
         const messageId = event.target.closest('div[data-message-id]').dataset.messageId;
         const result = await useFetchApi({ 'data': `{"need":"do_message-delete","mid":"${messageId}"}` });
         alert(result['text']);
+        if (result['error'] == '0')
+            window.location = window.location.href;
     },
     messageEditForm: async function (event) {
         const messageId = event.target.closest('div[data-message-id]').dataset.messageId;

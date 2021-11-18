@@ -95,6 +95,11 @@ class ModalWindow {
 		if (this.currentOverlay === event.target && !confirm('Ви впевнені, що бажаєте закрити поточне вікно?'))
 			return;
 
+		if (event.target.classList.contains("modal-reload-page")) {
+			window.location = window.location.href;
+			return;
+		}
+
 		if (this.modalIndex === 1) {
 			this.commonOverlay.style.opacity = 0;
 			setTimeout(() => this.commonOverlay.remove(), 300);
@@ -105,5 +110,8 @@ class ModalWindow {
 		this.modal.style.opacity = 0;
 		this.modal.style.transform = 'translateY(2%)';
 		setTimeout(() => this.currentOverlay.remove(), 300);
+
+		if (event.target.classList.contains("modal-reload-page"))
+			window.location = window.location.href;
 	}
 }
