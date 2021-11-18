@@ -16,7 +16,7 @@ else{
         $usersContacts = $action->getUsersContacts(['uid' => $usersList[$x]['id']]);
         $contacts = [];
         for($i=0;$i<count($usersContacts);$i++)
-            $contacts[$usersContacts[$i]['type']] .= "{$usersContacts[$i]['value']} <i class='fa fa-times' data-action='delete-contact' data-contact-id='{$usersContacts[$i]['id']}'></i><br>";
+            $contacts[$usersContacts[$i]['type']] .= "{$usersContacts[$i]['value']} <i class='fa fa-times' data-action='contact-delete' data-cid='{$usersContacts[$i]['id']}'></i><br>";
 
         $output['{MAIN_CONTENT}'] .= "
         <tr class='users__item' data-uid='{$usersList[$x]['id']}'>
@@ -40,8 +40,8 @@ else{
                 $contacts[tg_uid]
             </td>
             <td class='users__dashboard'>
-                <i class='fa fa-pencil-square-o'  data-action='edit-user-form'></i>
-                ".($usersList[$x]['role'] === 'admin' ? '' : '<i class="fa fa-user-times" data-action="delete-user"></i>').'
+                <i class='fa fa-pencil-square-o'  data-action='user-edit-form'></i>
+                ".($usersList[$x]['role'] === 'admin' ? '' : '<i class="fa fa-user-times" data-action="user-delete"></i>').'
             </td>
         </tr>
         ';
@@ -73,8 +73,8 @@ $output['{MAIN_CONTENT}'] = '
                             Telegram IDs
                         </th>
                         <th class="users__common-dashboard">
-                            <i class="fa fa-user-times action-text-blur" data-action="delete-users-array"></i>
-                            <i class="fa fa-user-plus" data-action="add-user-form"></i>
+                            <i class="fa fa-user-times action-text-blur" data-action="users-delete-array"></i>
+                            <i class="fa fa-user-plus" data-action="user-add-form"></i>
                         </th>
                     </tr>
                 </thead>

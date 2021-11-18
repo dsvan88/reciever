@@ -15,14 +15,47 @@ async function useFetchApi({ url = '/switcher.php', type = "json", data = '' } =
 }
 
 const mainFunc = {
+    commonActionHandler: async function (event) {
+        const target = event.target.closest('[data-action]');
+        const action = camelize(target.dataset.action);
+
+        if (typeof this[action] != 'undefined')
+            this[action](event);
+        else {
+            const formData = new FormData();
+            for (let [key, value] of Object.entries(target.dataset)) {
+                if (key === 'action') {
+                    if (value.endsWith('-form'))
+                        formData.append('need', `form_${value.replace(/-form$/, '')}`);
+                    else if (value.startsWith('get-'))
+                        formData.append('need', value.replace(/-/, '_'));
+                    else
+                        formData.append('need', `do_${value}`);
+                }
+                else {
+                    formData.append(key, value);
+                }
+            }
+            if (target.dataset.action.endsWith('-form')) {
+                const modal = this.commonFormEventStart();
+                const data = await useFetchApi({ 'data': formDataToJson(formData) });
+                this.commonFormEventEnd({ modal, data, formSubmitAction: action+'Submit' });
+            }
+            else {
+                const modal = this.commonFormEventStart();
+                const data = await useFetchApi({ data: formDataToJson(formData)});
+                this.commonFormEventEnd({modal, data});
+            }
+        }
+    },
     userLogOut: async function (event) {
         const data = await useFetchApi({ 'data': '{"need":"do_user-log-out"}' });
-        window.location.reload();
+        window.location = window.location.href;
     },
     commonFormEventStart: function (event) {
         return new ModalWindow();
     },
-    commonFormEventEnd: function ({modal, data, formSubmitAction}) {
+    commonFormEventEnd: function ({modal, data, formSubmitAction, ...args}) {
         let modalWindow;
         if (data['error'] === 0)
             modalWindow = modal.fillModalContent(data);
@@ -31,25 +64,9 @@ const mainFunc = {
         modalWindow.querySelectorAll('*[data-action]').forEach(block => block.addEventListener('click', (event) => this[camelize(block.dataset.action)](event)));
         const form = modalWindow.querySelector('form');
         if (form !== null && formSubmitAction) {
-            form.addEventListener('submit', (event) => this[formSubmitAction](event))
+            console.log(formSubmitAction);
+            form.addEventListener('submit', (event) => this[formSubmitAction](event, args))
         }
-    },
-    addUserForm: async function (event) {
-        const modal = this.commonFormEventStart();
-        const data = await useFetchApi({ 'data': '{"need":"form_user-add"}' });
-        this.commonFormEventEnd({modal, data, formSubmitAction: 'addUserFormSubmit'});
-    },
-    addUserFormSubmit: async function (event) {
-        event.preventDefault();
-        let formData = new FormData(event.target);
-        formData.append('need', 'do_user-add');
-        const result = await useFetchApi({ 'data': formDataToJson(formData) });
-        alert(result['text']);
-    },
-    settingsForm: async function (event) {
-        const modal = this.commonFormEventStart();
-        const data = await useFetchApi({ data: '{"need":"form_settings"}'});
-        this.commonFormEventEnd({modal, data});
     },
     addFormField: function (event) {
         const oldIntput = event.target.closest('div').querySelector('input');
@@ -95,49 +112,12 @@ const mainFunc = {
             window.location = event.target.closest('li').querySelector('a').href;
         }
     },
-    deleteContact: async function (event) {
-        if (!confirm(`Are you really wanna to delete contact with id: ${event.target.dataset.contactId}`))
+    contactDelete: async function (event) {
+        if (!confirm(`Are you really wanna to delete contact with id: ${event.target.dataset.cId}`))
             return false;
         const modal = this.commonFormEventStart();
-        const data = await useFetchApi({ data: `{"need":"do_contact-delete","cid":"${event.target.dataset.contactId}"}`});
+        const data = await useFetchApi({ data: `{"need":"do_contact-delete","cid":"${event.target.dataset.cId}"}`});
         this.commonFormEventEnd({modal, data});
-    },
-    deleteUser: async function (event) {
-        const userId = event.target.closest('tr').dataset.uid;
-        if (!confirm(`Are you really wanna to delete user with id: ${userId}`))
-            return false;
-        const modal = this.commonFormEventStart();
-        const data = await useFetchApi({ data: `{"need":"do_user-delete","uid":"${userId}"}`});
-        this.commonFormEventEnd({modal, data});
-    },
-    deleteUsersArray: async function (event) {
-        const checkboxes = document.body.querySelectorAll('input[name="check-user"]:checked');
-        if (checkboxes.length === 0) return;
-        const values = [];
-        checkboxes.forEach(checkbox => values.push(checkbox.value));
-
-        if (!confirm(`Are you really wanna to delete user with ids: ` + values.join(', ')))
-            return false;
-        
-        const formData = new FormData();
-        formData.append('need', 'do_users-array-delete');
-        formData.append('ids', values);
-        const modal = this.commonFormEventStart();
-        const data = await useFetchApi({ data: formDataToJson(formData) });
-        this.commonFormEventEnd({modal, data});
-    },
-    editUserForm: async function (event) {
-        const userId = event.target.closest('tr').dataset.uid;
-        const modal = this.commonFormEventStart();
-        const data = await useFetchApi({ data: `{"need":"form_user-edit","uid":"${userId}"}`});
-        this.commonFormEventEnd({modal, data, formSubmitAction: 'editUserFormSubmit'});
-    },
-    editUserFormSubmit: async function (event) {
-        event.preventDefault();
-        let formData = new FormData(event.target);
-        formData.append('need', 'do_user-edit');
-        const result = await useFetchApi({ 'data': formDataToJson(formData) });
-        alert(result['text']);
     },
     messageArchive: async function (event) {
         event.preventDefault();
@@ -172,11 +152,38 @@ const mainFunc = {
         const result = await useFetchApi({ 'data': formDataToJson(formData) });
         alert(result['text']);
     },
+    notesBlockToggle: async function (event) {
+        const notesBlock = event.target.parentElement.querySelector('.messages__notes');
+        let savedNotes = event.target.parentElement.querySelector('div.messages__notes-saved');
+        let html = '';
+
+        if (!savedNotes) {
+            const messageId = event.target.closest('[data-message-id]').dataset.messageId;
+            const result = await useFetchApi({ 'data': `{"need":"get_notes-data","mid":"${messageId}"}` });
+            
+            savedNotes = document.createElement('div');
+            savedNotes.className = 'messages__notes-saved';
+            notesBlock.after(savedNotes);
+            html = result['html'];
+        }
+        else {
+            html = savedNotes.innerHTML;
+            savedNotes.innerHTML = notesBlock.innerHTML;
+        }
+        event.target.innerText = event.target.innerText === '< Show notes >' ? '< Hide notes >' : '< Show notes >'
+        notesBlock.innerHTML = html;
+    },
+    userAddFormSubmit: async function (event, args) {
+        event.preventDefault();
+        let formData = new FormData(event.target);
+        formData.append('need', 'do_user-add');
+        const result = await useFetchApi({ 'data': formDataToJson(formData) });
+        alert(result['text']);
+    },
     userPasswordChangeForm: async function (event) {
         event.preventDefault();
         const modal = this.commonFormEventStart();
-        const form = event.target.closest('form');
-        const userId = form.querySelector('input[name=uid]').value;
+        const userId = event.target.closest('form').querySelector('input[name=uid]').value;
         const data = await useFetchApi({ 'data': `{"need":"form_user-password-change","uid":"${userId}"}` });
         this.commonFormEventEnd({modal, data, formSubmitAction: 'userPasswordChangeFormSubmit'});
     },
@@ -202,29 +209,44 @@ const mainFunc = {
         const result = await useFetchApi({ 'data': `{"need":"do_user-password-reset","uid":"${userId}"}` });
         alert(result['text']);
     },
-    notesBlockToggle: async function (event) {
-        const notesBlock = event.target.parentElement.querySelector('.messages__notes');
-        let savedNotes = event.target.parentElement.querySelector('div.messages__notes-saved');
-        let html = '';
+    userDelete: async function (event) {
+        const userId = event.target.closest('tr').dataset.uid;
+        if (!confirm(`Are you really wanna to delete user with id: ${userId}`))
+            return false;
+        const modal = this.commonFormEventStart();
+        const data = await useFetchApi({ data: `{"need":"do_user-delete","uid":"${userId}"}`});
+        this.commonFormEventEnd({modal, data});
+    },
+    usersDeleteArray: async function (event) {
+        const checkboxes = document.body.querySelectorAll('input[name="check-user"]:checked');
+        if (checkboxes.length === 0) return;
+        const values = [];
+        checkboxes.forEach(checkbox => values.push(checkbox.value));
 
-        if (!savedNotes) {
-            const messageId = event.target.closest('[data-message-id]').dataset.messageId;
-            const result = await useFetchApi({ 'data': `{"need":"get_notes-data","mid":"${messageId}"}` });
-            
-            savedNotes = document.createElement('div');
-            savedNotes.className = 'messages__notes-saved';
-            notesBlock.after(savedNotes);
-            html = result['html'];
-        }
-        else {
-            html = savedNotes.innerHTML;
-            savedNotes.innerHTML = notesBlock.innerHTML;
-        }
-        event.target.innerText = event.target.innerText === '< Show notes >' ? '< Hide notes >' : '< Show notes >'
-        notesBlock.innerHTML = html;
-    }
+        if (!confirm(`Are you really wanna to delete user with ids: ` + values.join(', ')))
+            return false;
+        
+        const formData = new FormData();
+        formData.append('need', 'do_users-array-delete');
+        formData.append('ids', values);
+        const modal = this.commonFormEventStart();
+        const data = await useFetchApi({ data: formDataToJson(formData) });
+        this.commonFormEventEnd({modal, data});
+    },
+    userEditForm: async function (event) {
+        const userId = event.target.closest('tr').dataset.uid;
+        const modal = this.commonFormEventStart();
+        const data = await useFetchApi({ data: `{"need":"form_user-edit","uid":"${userId}"}`});
+        this.commonFormEventEnd({modal, data, formSubmitAction: 'userEditFormSubmit'});
+    },
+    userEditFormSubmit: async function (event) {
+        event.preventDefault();
+        let formData = new FormData(event.target);
+        formData.append('need', 'do_user-edit');
+        const result = await useFetchApi({ 'data': formDataToJson(formData) });
+        alert(result['text']);
+    },
 };
-
 
 function formDataToJson(data) {
     const object = {};

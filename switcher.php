@@ -13,8 +13,10 @@ if (strpos($contentType,'application/json') !==  false) {
 
 $need = trim(isset($_GET['need']) ? $_GET['need'] : $_POST['need']);
 
-if ($need==='') 
+if ($need===''){
+    error_log(json_encode($_POST,JSON_UNESCAPED_UNICODE));
     die('{"error":"1","title":"Error!","html":"Wrong `need` type."}');
+}
 
 $_POST = str_replace("'",'’',$_POST);
 

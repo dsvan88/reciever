@@ -8,20 +8,36 @@ class Messages extends Action {
         if (isset($data['uid']))
             $this->uid = $data['uid'];
     }
-    public function getMessagesCount(){
-        if ($this->uid === 0)
-            return $this->getColumn($this->prepQuery('SELECT COUNT(id) FROM '.TABLE_MAIN.' WHERE status = ? ', ['new']));
-        return $this->getColumn($this->prepQuery('SELECT COUNT(id) FROM '.TABLE_MAIN.' WHERE status = ? AND uid = ? ', ['new', $this->uid]));
-    }
-    public function getMessages($page = 0){
-        if ($page === 0)
-            $limit = ' LIMIT '.CFG_MESSAGE_PER_PAGE;
-        else
-            $limit = ' LIMIT '.CFG_MESSAGE_PER_PAGE.' OFFSET '.(CFG_MESSAGE_PER_PAGE*$page);
-        if ($this->uid === 0){
-            return $this->getAssocArray($this->prepQuery('SELECT * FROM '.TABLE_MAIN.' WHERE status = ? ORDER BY id DESC'.$limit,['new']));
+    public function getMessagesCount($searchString=''){
+        $values = ['new'];
+        $searchQuery = 'SELECT COUNT(id) FROM '.TABLE_MAIN.' WHERE status = ? ';
+        if ($this->uid !== 0){
+            $searchQuery .= ' AND uid = ?';
+            $values[] = $this->uid;
         }
-        return $this->getAssocArray($this->prepQuery('SELECT * FROM '.TABLE_MAIN.'  WHERE status = ? AND uid = ? ORDER BY id DESC'.$limit, ['new',$this->uid]));
+        if ($searchString !== ''){
+            $searchQuery .= ' AND ( name ~~* ? OR contact ~~* ? OR email ~~* ? OR message ~~* ? )'; // ~~* - аналог ILIKE - регистронезависимый поиск подстроки
+            $values = array_pad($values, count($values)+4, "%$searchString%");
+        }
+        return $this->getColumn($this->prepQuery($searchQuery, $values));
+    }
+    public function getMessages($page = 0, $searchString){
+        $values = ['new'];
+        $searchQuery = 'SELECT * FROM '.TABLE_MAIN.' WHERE status = ? ';
+        if ($this->uid !== 0){
+            $searchQuery .= ' AND uid = ?';
+            $values[] = $this->uid;
+        }
+        if ($searchString !== ''){
+            $searchQuery .= ' AND ( name ~~* ? OR contact ~~* ? OR email ~~* ? OR message ~~* ? )'; // ~~* - аналог ILIKE - регистронезависимый поиск подстроки
+            $values = array_pad($values, count($values)+4, "%$searchString%");
+        }
+        if ($page === 0)
+            $searchQuery .= ' LIMIT '.CFG_MESSAGE_PER_PAGE;
+        else
+            $searchQuery .= ' LIMIT '.CFG_MESSAGE_PER_PAGE.' OFFSET '.(CFG_MESSAGE_PER_PAGE*$page);
+        
+        return $this->getAssocArray($this->prepQuery($searchQuery, $values));
     }
     public function getMessageData($conditions = [], $columns = '*'){
         if (!is_array($columns))
@@ -39,20 +55,36 @@ class Messages extends Action {
         }
         return $this->getAssoc($this->prepQuery(str_replace('{TABLE_MAIN}', TABLE_MAIN, "SELECT $keys FROM {TABLE_MAIN} $where"), $conditions));
     }
-    public function getArchivedMessagesCount(){
-        if ($this->uid === 0)
-            return $this->getColumn($this->prepQuery('SELECT COUNT(id) FROM '.TABLE_MAIN.' WHERE status = ? ', ['archive']));
-        return $this->getColumn($this->prepQuery('SELECT COUNT(id) FROM '.TABLE_MAIN.' WHERE status = ? AND uid = ? ', ['archive', $this->uid]));
-    }
-    public function getArchivedMessages($page){
-        if ($page === 0)
-            $limit = ' LIMIT '.CFG_MESSAGE_PER_PAGE;
-        else
-            $limit = ' LIMIT '.CFG_MESSAGE_PER_PAGE.' OFFSET '.(CFG_MESSAGE_PER_PAGE*$page);
-        if ($this->uid === 0){
-            return $this->getAssocArray($this->prepQuery('SELECT * FROM '.TABLE_MAIN.' WHERE status = ? ORDER BY id DESC'.$limit, ['archive']));
+    public function getArchivedMessagesCount($searchString){
+        $values = ['archive'];
+        $searchQuery = 'SELECT COUNT(id) FROM '.TABLE_MAIN.' WHERE status = ? ';
+        if ($this->uid !== 0){
+            $searchQuery .= ' AND uid = ?';
+            $values[] = $this->uid;
         }
-        return $this->getAssocArray($this->prepQuery('SELECT * FROM '.TABLE_MAIN.'  WHERE status = ? AND uid = ? ORDER BY id DESC'.$limit, ['archive', $this->uid]));
+        if ($searchString !== ''){
+            $searchQuery .= ' AND ( name ~~* ? OR contact ~~* ? OR email ~~* ? OR message ~~* ? )'; // ~~* - аналог ILIKE - регистронезависимый поиск подстроки
+            $values = array_pad($values, count($values)+4, "%$searchString%");
+        }
+        return $this->getColumn($this->prepQuery($searchQuery, $values));
+    }
+    public function getArchivedMessages($page,$searchString){
+        $values = ['archive'];
+        $searchQuery = 'SELECT * FROM '.TABLE_MAIN.' WHERE status = ? ';
+        if ($this->uid !== 0){
+            $searchQuery .= ' AND uid = ?';
+            $values[] = $this->uid;
+        }
+        if ($searchString !== ''){
+            $searchQuery .= ' AND ( name ~~* ? OR contact ~~* ? OR email ~~* ? OR message ~~* ? )'; // ~~* - аналог ILIKE - регистронезависимый поиск подстроки
+            $values = array_pad($values, count($values)+4, "%$searchString%");
+        }
+        if ($page === 0)
+            $searchQuery .= ' LIMIT '.CFG_MESSAGE_PER_PAGE;
+        else
+            $searchQuery .= ' LIMIT '.CFG_MESSAGE_PER_PAGE.' OFFSET '.(CFG_MESSAGE_PER_PAGE*$page);
+        
+        return $this->getAssocArray($this->prepQuery($searchQuery, $values));
     }
     public function setMessageArchive($mId){
         return $this->rowUpdate(['status' => 'archive'], ['id' => $mId]);

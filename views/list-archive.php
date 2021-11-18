@@ -2,7 +2,10 @@
 require_once $_SERVER['DOCUMENT_ROOT'].'/engine/class.messages.php';
 
 $messages = new Messages($_SESSION['role'] === 'admin' ? [] : ['uid'=>$_SESSION['id']]);
-$messagesCount = $messages->getArchivedMessagesCount();
+
+$searchString = isset($_GET['search']) ? trim($_GET['search']) : '';
+
+$messagesCount = $messages->getArchivedMessagesCount($searchString);
 
 if ($messagesCount === 0){
   $output['{MAIN_CONTENT}'] = '<h1>Nothing to show!</h1>';
@@ -15,7 +18,7 @@ else {
   $page = 0;
   if (isset($_GET['page']))
     $page = (int) $_GET['page'];
-  $allMessages = $messages->getArchivedMessages($page);
+  $allMessages = $messages->getArchivedMessages($page, $searchString);
   $output['{MAIN_CONTENT}'] = '';
   for($x=0;$x<count($allMessages);$x++){
       
@@ -93,7 +96,7 @@ else {
 $output['{MAIN_CONTENT}'] = '<main class="main messages main-section">
   <div class="messages__common-dashboard">
     <form action="/">
-      <input type="hidden" name="view" value="archive">
+      <input type="hidden" name="view" value="list-archive">
       <input type="text" name="search" placeholder="search...">
       <button><i class="fa fa-search" aria-hidden="true"></i></button>
     </form>
