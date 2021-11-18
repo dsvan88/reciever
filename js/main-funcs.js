@@ -143,6 +143,8 @@ const mainFunc = {
         formData.append('need', 'do_message-edit');
         const result = await useFetchApi({ 'data': formDataToJson(formData) });
         alert(result['text']);
+        if (result['error'] == '0')
+            window.location = window.location.href;
     },
     reSetMainTechData: async function (event) {
         event.preventDefault();
@@ -179,6 +181,8 @@ const mainFunc = {
         formData.append('need', 'do_user-add');
         const result = await useFetchApi({ 'data': formDataToJson(formData) });
         alert(result['text']);
+        if (result['error'] == '0')
+            window.location = window.location.href;
     },
     userPasswordChangeForm: async function (event) {
         event.preventDefault();
@@ -234,7 +238,7 @@ const mainFunc = {
         this.commonFormEventEnd({modal, data});
     },
     userEditForm: async function (event) {
-        const userId = event.target.closest('tr').dataset.uid;
+        const userId = event.target.closest('*[data-uid]').dataset.uid;
         const modal = this.commonFormEventStart();
         const data = await useFetchApi({ data: `{"need":"form_user-edit","uid":"${userId}"}`});
         this.commonFormEventEnd({modal, data, formSubmitAction: 'userEditFormSubmit'});
@@ -243,14 +247,18 @@ const mainFunc = {
         event.preventDefault();
         let formData = new FormData(event.target);
         formData.append('need', 'do_user-edit');
+        console.log(formDataToJson(formData));
         const result = await useFetchApi({ 'data': formDataToJson(formData) });
         alert(result['text']);
+        if (result['error'] == '0')
+            window.location = window.location.href;
     },
 };
 
 function formDataToJson(data) {
     const object = {};
     data.forEach((value, key) => {
+        value = value.replace("'", '’');
         if (key.includes('[')) {
 			key = key.substr(0, key.indexOf('['));
 			if (!object[key])

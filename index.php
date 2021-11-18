@@ -32,6 +32,9 @@ if (!isset($_SESSION['id'])){
 }
 
 $output['{LEFT_ASIDE}'] = file_get_contents(__DIR__.'/templates/left-side-'.$_SESSION['role'].'.html');
+
+$output['{{UserID}}'] = $_SESSION['id'];
+
 $output['{HEADER_CONTENT}'] .= '<div class="header__exit" data-action="user-log-out" title="Logout"><i class="fa fa-sign-out"></i></div>';
 
 $output['{SCRIPTS}'] = "

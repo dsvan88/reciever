@@ -32,6 +32,9 @@ class Messages extends Action {
             $searchQuery .= ' AND ( name ~~* ? OR contact ~~* ? OR email ~~* ? OR message ~~* ? )'; // ~~* - аналог ILIKE - регистронезависимый поиск подстроки
             $values = array_pad($values, count($values)+4, "%$searchString%");
         }
+
+        $searchQuery .= ' ORDER BY id DESC';
+
         if ($page === 0)
             $searchQuery .= ' LIMIT '.CFG_MESSAGE_PER_PAGE;
         else
@@ -69,6 +72,7 @@ class Messages extends Action {
         return $this->getColumn($this->prepQuery($searchQuery, $values));
     }
     public function getArchivedMessages($page,$searchString){
+        
         $values = ['archive'];
         $searchQuery = 'SELECT * FROM '.TABLE_MAIN.' WHERE status = ? ';
         if ($this->uid !== 0){
@@ -79,6 +83,9 @@ class Messages extends Action {
             $searchQuery .= ' AND ( name ~~* ? OR contact ~~* ? OR email ~~* ? OR message ~~* ? )'; // ~~* - аналог ILIKE - регистронезависимый поиск подстроки
             $values = array_pad($values, count($values)+4, "%$searchString%");
         }
+
+        $searchQuery .= ' ORDER BY id DESC';
+
         if ($page === 0)
             $searchQuery .= ' LIMIT '.CFG_MESSAGE_PER_PAGE;
         else

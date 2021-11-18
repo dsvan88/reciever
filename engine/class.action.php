@@ -24,8 +24,8 @@ class Action {
     }
     function prepQuery($q,$a)
     {
-        error_log($q);
-        error_log(json_encode($a));
+        // error_log($q);
+        // error_log(json_encode($a));
         try {
             $stmt = $this->SQL->prepare($q);
             $stmt->execute($a);

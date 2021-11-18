@@ -27,7 +27,7 @@ if (count($_POST['notes']) > 0){
     
     $notesAction = new Notes();
     $notesAll = $notesAction->getNotes($_POST['mid']);
-    $notesAdd = [];
+    $notesAdd = $notesDelete = [];
     if (count($notesAll) === 0){
         for ($i=0; $i < count($_POST['notes']); $i++) { 
             if (trim($_POST['notes'][$i]) == '') continue;
@@ -38,7 +38,6 @@ if (count($_POST['notes']) > 0){
                 'time' => time()
             ];
         }
-        $notesAction->addNote($notesAdd);
     }
     else{
         for ($i=0; $i < count($notesAll); $i++) { 
@@ -59,12 +58,14 @@ if (count($_POST['notes']) > 0){
             }
         }
 
-        if (count($notesAdd) > 0)
-            $notesAction->addNote($notesAdd);
-
-        for ($i=0; $i < count($notesDelete); $i++) { 
-            $notesAction->deleteNote($notesDelete[$i]);
+        if (count($notesDelete) > 0){
+            for ($i=0; $i < count($notesDelete); $i++) { 
+                $notesAction->deleteNote($notesDelete[$i]);
+            }
         }
     }
+    if (count($notesAdd) > 0)
+        $notesAction->addNote($notesAdd);
+
 }
 $output['text'] = 'Done!';
