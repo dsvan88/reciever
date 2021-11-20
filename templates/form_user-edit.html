@@ -1,0 +1,33 @@
+<div class="modal-container">
+	<form class="common-form" method="POST">
+		<picture>
+			<source srcset="../images/logo.webp" type="image/webp" />
+			<img class="common-form__logo" title="My logo" alt="My logo" src="./images/logo.png" />
+		</picture>
+		<h1 class="common-form__title">User edit form</h1>
+		<div class="common-form__divided-block">
+			<div class="common-form__column">
+				<h3>Authorization Data</h3>
+				<div class="common-form__row">
+					<input type="hidden" name="uid" value="{{UserId}}" />
+					<input class="common-form__input" type="text" name="login" placeholder="Username" value="{{UserName}}" autofocus />
+				</div>
+				<h3>Password</h3>
+				<div class="modal-buttons">
+					<button type="button" class="positive" data-action="user-password-change-form">Change</button>
+					<button type="button" class="positive" data-action="user-password-reset">Reset</button>
+				</div>
+			</div>
+			<div class="common-form__column">
+				<h3>Technical Data</h3>
+				<div class="common-form__row-expand_vertical">{{UserEmails}}</div>
+				<div class="common-form__row-expand_vertical">{{UserTelegramIDs}}</div>
+				<div class="common-form__row-expand_vertical">{{UserWebsites}}</div>
+			</div>
+		</div>
+		<div class="modal-buttons">
+			<button type="submit" class="positive">Edit</button>
+			<button type="button" class="modal-close negative">Cancel</button>
+		</div>
+	</form>
+</div>

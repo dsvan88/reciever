@@ -1,0 +1,15 @@
+<main class="main">
+	<form class="signin-form" method="POST" action="/engine/init.php">
+		<picture>
+			<source srcset="../images/logo.webp" type="image/webp" />
+			<img title="My logo" alt="My logo" src="./images/logo.png" />
+		</picture>
+		<h1 class="signin-form__title">Please set main Authorization Data</h1>
+		<input type="text" name="login" placeholder="Username" autofocus />
+		<input type="password" name="password" placeholder="Password" />
+		<input type="email" name="email" placeholder="E-mail" />
+		<input type="password" name="email-password" placeholder="E-mail password" />
+		<input type="text" name="tg_bot_token" placeholder="Telegram BotToken" />
+		<button type="submit">Init system</button>
+	</form>
+</main>

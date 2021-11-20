@@ -1,0 +1,26 @@
+<div class="modal-container">
+	<form class="common-form" method="POST">
+		<picture>
+			<source srcset="../images/logo.webp" type="image/webp" />
+			<img class="common-form__logo" title="My logo" alt="My logo" src="./images/logo.png" />
+		</picture>
+		<div class="common-form__row">
+			<input type="hidden" name="mid" value="{{MessageId}}" />
+			<input class="common-form__input" type="text" name="customer-name" placeholder="Customer's name" value="{{CustomerName}}" autofocus />
+		</div>
+		<div class="common-form__row">
+			<input class="common-form__input" type="text" name="customer-email" placeholder="Customer's e-mail" value="{{CustomerEmail}}" />
+		</div>
+		<div class="common-form__row">
+			<input class="common-form__input" type="text" name="customer-contact" placeholder="Customer's contact" value="{{CustomerContact}}" />
+		</div>
+		<div class="common-form__row">
+			<textarea class="common-form__textarea" name="customer-message" placeholder="Customer's message">{{CustomerMessage}}</textarea>
+		</div>
+		<div class="common-form__row-expand_vertical">{{MasterNotices}}</div>
+		<div class="modal-buttons">
+			<button type="submit" class="positive">Edit</button>
+			<button type="button" class="modal-close negative">Cancel</button>
+		</div>
+	</form>
+</div>
