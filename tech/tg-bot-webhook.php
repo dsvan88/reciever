@@ -30,15 +30,13 @@ $action->rowInsert($array);
 
 require $_SERVER['DOCUMENT_ROOT'].'/engine/class.bots.php';
 
-if (count($tg_uIDs) > 0){
-    $bot = new MessageBot();
-    $bot->message = "Yes, I hear you! Mr. $array[name]";    
+$bot = new MessageBot();
+$bot->message = "Yes, I hear you! Mr. $array[name]";    
 
-    try {
-        $messageSend = json_decode($bot->sendToTelegramBot($_POST['message']['chat']['id']), true);
-        $result['text'] .=  $messageSend['ok'] ? '<div>Message to telegram - send.</div>' : "<div>Message to telegram - not send ($messageSend[description])!</div>";
-    }
-    catch (Exception $e) {
-        $result['text'] .= "<div>Message not send!</div>";
-    }
+try {
+    $messageSend = json_decode($bot->sendToTelegramBot($_POST['message']['chat']['id']), true);
+    $result['text'] .=  $messageSend['ok'] ? '<div>Message to telegram - send.</div>' : "<div>Message to telegram - not send ($messageSend[description])!</div>";
+}
+catch (Exception $e) {
+    $result['text'] .= "<div>Message not send!</div>";
 }
