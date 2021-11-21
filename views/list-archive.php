@@ -95,8 +95,7 @@ else {
 
 $output['{MAIN_CONTENT}'] = '<main class="main messages main-section">
   <div class="messages__common-dashboard">
-    <form action="/">
-      <input type="hidden" name="view" value="list-archive">
+    <form action="/archive">
       <input type="text" name="search" placeholder="search...">
       <button><i class="fa fa-search" aria-hidden="true"></i></button>
     </form>

@@ -6,9 +6,9 @@ blocksWithAction.forEach(block => block.addEventListener('click', (event) => mai
 const blocksWithChangeAction = document.body.querySelectorAll('*[data-action-change]');
 blocksWithChangeAction.forEach(block => block.addEventListener('change', (event) => mainFunc[camelize(block.dataset.actionChange)](event)));
 
-if (window.location.search === "")
+if (window.location.pathname === "/")
     document.body.querySelector('.left-side li.dashboard__item').classList.add('active');
 else {
     const dashboardItems = document.body.querySelectorAll('.left-side li.dashboard__item');
-    dashboardItems.forEach(item => item.querySelector('a').href === window.location.href ? item.classList.add('active') : false);
+    dashboardItems.forEach(item => item.querySelector('a').href === `${window.location.protocol}//${window.location.hostname}${window.location.pathname}` ? item.classList.add('active') : false );
 }
