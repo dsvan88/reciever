@@ -1,5 +1,5 @@
 <?php
-require dirname(__DIR__).'/config/vars.php';
+require $_SERVER['DOCUMENT_ROOT'].'/config/vars.php';
 
 class Action {
     private $SQL;

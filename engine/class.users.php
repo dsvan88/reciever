@@ -11,9 +11,8 @@ class Users extends Action{
         $authData = $this->getAssoc($this->prepQuery(str_replace('{TABLE_USERS}', TABLE_USERS, 'SELECT id,login,password,role FROM {TABLE_USERS} WHERE login = ? LIMIT 1'),[$data['login']]));
         if (password_verify($data['password'], $authData['password'])){
             unset($authData['password']);
-            $authData['expire'] = $_SERVER['REQUEST_TIME']+CFG_MAX_SESSION_AGE+(mt_rand(0,3600)-1800);
-            setcookie('_token', sha1(sha1($authData['expire'].$authData['login'])));
             $_SESSION = $authData;
+            $this->prolongSession();
             return true;
         }
         return false;
