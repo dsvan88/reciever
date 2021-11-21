@@ -15,21 +15,7 @@ $output = [
 	'{MAIN_CONTENT}' => ''
 ];
 
-if (!isset($_SESSION['id'])){
-	if (!isset($_POST['login']) || !isset($_POST['password'])){
-		require $_SERVER['DOCUMENT_ROOT'].'/views/signin.php';
-		die(str_replace(array_keys($output),array_values($output),$template));
-	}
-
-	$data = [
-		'login' => strtolower(trim($_POST['login'])),
-		'password' => sha1(trim($_POST['password']))
-	];
-	if (!$user->login($data)){
-		require $_SERVER['DOCUMENT_ROOT'].'/views/signin.php';
-		die(str_replace(array_keys($output),array_values($output),$template));
-	}
-}
+require $_SERVER['DOCUMENT_ROOT'].'/engine/auth.php';
 
 $output['{LEFT_ASIDE}'] = file_get_contents(__DIR__.'/templates/left-side-'.$_SESSION['role'].'.html');
 
