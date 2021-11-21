@@ -31,7 +31,7 @@ $action->rowInsert($array);
 require $_SERVER['DOCUMENT_ROOT'].'/engine/class.bots.php';
 
 $bot = new MessageBot();
-$bot->message = "Yes, I hear you! Mr. $array[name]";    
+$bot->message = "Yes, I hear you! Mr. $array[name], you said: $array[message]";    
 
 try {
     $messageSend = json_decode($bot->sendToTelegramBot($_POST['message']['chat']['id']), true);
