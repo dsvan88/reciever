@@ -3,4 +3,5 @@ Options +FollowSymLinks -MultiViews
 # Turn mod_rewrite on
 RewriteEngine On
 RewriteBase /
+RewriteCond %{REQUEST_URI}  ^/(?!(js|css|images)).*
 RewriteRule ^(.*)$ server.php [L]
