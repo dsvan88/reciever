@@ -38,5 +38,4 @@ if ($_SERVER['REQUEST_URI'] !== '/'){
 else
 	require $_SERVER['DOCUMENT_ROOT'].'/views/list-messages.php';
 
-
 echo str_replace(array_keys($output),array_values($output),$template);
