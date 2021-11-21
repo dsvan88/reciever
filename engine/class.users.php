@@ -4,24 +4,47 @@ require_once __DIR__.'/class.crypt.php';
 
 class Users extends Action{
     public function login($data){
+        $data = [
+            'login' => strtolower(trim($data['login'])),
+            'password' => sha1(trim($data['password']))
+        ];
         $authData = $this->getAssoc($this->prepQuery(str_replace('{TABLE_USERS}', TABLE_USERS, 'SELECT id,login,password,role FROM {TABLE_USERS} WHERE login = ? LIMIT 1'),[$data['login']]));
         if (password_verify($data['password'], $authData['password'])){
             unset($authData['password']);
+            $authData['expire'] = $_SERVER['REQUEST_TIME']+CFG_MAX_SESSION_AGE+(mt_rand(0,3600)-1800);
+            setcookie('_token', sha1(sha1($authData['expire'].$authData['login'])));
             $_SESSION = $authData;
             return true;
         }
         return false;
     }
     public function logout(){
-        $_SESSION = array();
+        $_SESSION = [];
         if (ini_get("session.use_cookies")) {
             $params = session_get_cookie_params();
-            setcookie(session_name(), '', time() - 42000,
+            setcookie(session_name(), '', $_SERVER['REQUEST_TIME'] - 42000,
                 $params["path"], $params["domain"],
                 $params["secure"], $params["httponly"]
             );
+            setcookie('_token', '', $_SERVER['REQUEST_TIME'] - 42000);
         }
         session_destroy();
+        return true;
+    }
+    public function checkToken(){
+
+        if (isset($_COOKIE['_token']) && $_COOKIE['_token'] === sha1(sha1($_SESSION['expire'].$_SESSION['login']))){
+            if ($_SESSION['expire'] - $_SERVER['REQUEST_TIME'] < CFG_MAX_SESSION_AGE/3){
+                $this->prolongSession();
+            }
+            return true;
+        }
+        return false;
+    }
+    public function prolongSession(){
+
+        $_SESSION['expire'] = $_SERVER['REQUEST_TIME']+CFG_MAX_SESSION_AGE+(mt_rand(0,3600)-1800);
+        setcookie('_token', sha1(sha1($_SESSION['expire'].$_SESSION['login'])));
         return true;
     }
     public function getCryptKey(){

@@ -17,6 +17,7 @@ if (!defined('SQL_HOST'))
 		define('SQL_DB', 	'dsvtester');
 	}
 	define('CFG_DEBUG', false);
+	define('CFG_MAX_SESSION_AGE', 60*60*24*7);
 	define('CFG_MESSAGE_PER_PAGE', 20);
 	define('CFG_EMAIL', true);
 	define('CFG_BOTS', true);

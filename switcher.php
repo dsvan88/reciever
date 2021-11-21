@@ -23,6 +23,13 @@ if (!session_id()){
     session_start();
 }
 
+require_once $_SERVER['DOCUMENT_ROOT'].'/engine/class.users.php';
+$action = new Users();
+
+if ( !isset($_SESSION['id']) || isset($_SESSION['id']) && ( $_SESSION['expire'] < $_SERVER['REQUEST_TIME'] || !$action->checkToken() )){
+    die('{"error":"1","title":"Error!","html":"Session not found!"}');
+}
+
 $output['error'] = 0;
 
 try{
