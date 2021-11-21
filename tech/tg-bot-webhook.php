@@ -11,7 +11,9 @@ if (strpos($contentType,'application/json') !==  false) {
     }
 }
 
-file_put_contents($_SERVER['DOCUMENT_ROOT'].'/tg_bot-message.txt',print_r($_POST, true));
+if (file_exists($_SERVER['DOCUMENT_ROOT'].'/tg_bot-message.txt'))
+     unlink($_SERVER['DOCUMENT_ROOT'].'/tg_bot-message.txt');
+
 $array=[
     'name'=>"{$_POST['message']['from']['first_name']} {$_POST['message']['from']['last_name']} (@{$_POST['message']['from']['username']}, id:{$_POST['message']['from']['id']})",
     'email'=> '-',
