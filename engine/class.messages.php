@@ -21,7 +21,7 @@ class Messages extends Action {
         }
         return $this->getColumn($this->prepQuery($searchQuery, $values));
     }
-    public function getMessages($page = 0, $searchString){
+    public function getMessages($page = 0, $searchString=''){
         $values = ['new'];
         $searchQuery = 'SELECT * FROM '.TABLE_MAIN.' WHERE status = ? ';
         if ($this->uid !== 0){
@@ -71,7 +71,7 @@ class Messages extends Action {
         }
         return $this->getColumn($this->prepQuery($searchQuery, $values));
     }
-    public function getArchivedMessages($page,$searchString){
+    public function getArchivedMessages($page,$searchString=''){
         
         $values = ['archive'];
         $searchQuery = 'SELECT * FROM '.TABLE_MAIN.' WHERE status = ? ';

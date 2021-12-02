@@ -251,7 +251,6 @@ const mainFunc = {
         event.preventDefault();
         let formData = new FormData(event.target);
         formData.append('need', 'do_user-edit');
-        console.log(formDataToJson(formData));
         const result = await useFetchApi({ 'data': formDataToJson(formData) });
         alert(result['text']);
         if (result['error'] == '0')

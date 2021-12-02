@@ -35,6 +35,7 @@ class MessageBot{
 			// CURLOPT_SSL_VERIFYPEER => 0,
 		);
 		curl_setopt_array($curl , $options);
+       curl_exec($curl);
         if (is_array($userId) && isset($userId[1])){
             $newParams = $params;
             for($x=1; $x<count($userId); $x++){
@@ -43,6 +44,7 @@ class MessageBot{
                 curl_setopt($curl, CURLOPT_POSTFIELDS, $newParams);
                 $result = curl_exec($curl);
             }
+            return $result;
         }
         else 
             return curl_exec($curl);
